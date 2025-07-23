@@ -1,0 +1,23 @@
+lib/
+├── core/
+│   ├── config/          # Theme, constants, localization
+│   ├── network/         # API clients, interceptors
+│   ├── utils/           # Helpers, validators, extensions
+│   └── services/        # Auth, Firebase, etc.
+│
+├── data/
+│   ├── models/          # Model classes (User, Agency, Package, etc.)
+│   ├── repositories/    # Abstractions and implementations
+│   └── datasources/     # Remote & local data sources
+│
+├── domain/
+│   ├── entities/        # Pure business logic models
+│   └── usecases/        # Application-specific business rules
+│
+├── presentation/
+│   ├── cubits/          # Cubits/States (organized by feature)
+│   ├── views/           # Screens (UI only)
+│   ├── widgets/         # Shared widgets
+│   └── routes/          # Navigation and route handling
+│
+└── main.dart
