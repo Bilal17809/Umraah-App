@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:umraah_app/presentation/home/view/dashboard_view/view/dashboard_view.dart';
+import 'package:umraah_app/presentation/home/view/tab_bar_view/view/tab_bar_view.dart';
 import '../bloc/verify_otp_cubit.dart';
 import '../bloc/verify_otp_state.dart';
 import '/domain/entities/user_entities.dart';
@@ -56,6 +58,17 @@ class _OtpVerifyScreenState extends State<OtpVerifyScreen> {
                         }
                       },
                       child: const Text('Verify OTP'),
+                    ),
+                    TextButton(
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => AgencyDashboardScreen(),
+                          ),
+                        );
+                      },
+                      child: Text("Next"),
                     ),
                     if (state.errorMessage != null)
                       Padding(
