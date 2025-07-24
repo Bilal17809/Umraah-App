@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../cubit/signup_cubit.dart';
-import '../cubit/signup_state.dart';
+import 'package:umraah_app/presentation/signup/bloc/signup_cubit.dart';
+import 'package:umraah_app/presentation/signup/bloc/signup_state.dart';
+import '../../verify_otp/view/verify_otp_view.dart';
+import '/domain/entities/user_entities.dart';
 
-class RegisterScreen extends StatelessWidget {
+class SignupView extends StatelessWidget {
   final _formKey = GlobalKey<FormState>();
 
   final firstName = TextEditingController();
@@ -15,43 +17,43 @@ class RegisterScreen extends StatelessWidget {
   final agencyAddress = TextEditingController();
   final agencyLicenceNumber = TextEditingController();
 
-  RegisterScreen({super.key});
+  SignupView({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final cubit = context.watch<RegisterCubit>();
+    final cubit = context.read<SignupCubit>();
 
     return Scaffold(
-      appBar: AppBar(title: Text('Register User')),
+      appBar: AppBar(title: const Text('Register User')),
       body: Padding(
-        padding: EdgeInsets.all(16),
+        padding: const EdgeInsets.all(16),
         child: SingleChildScrollView(
-          child: BlocConsumer<RegisterCubit, RegisterState>(
+          child: BlocConsumer<SignupCubit, SignupState>(
             listener: (context, state) {
-              if (state is RegisterSuccess) {
+              if (state.isSuccess) {
                 showDialog(
                   context: context,
                   builder: (_) => AlertDialog(
-                    title: Text("Success"),
-                    content: Text("Registered successfully!"),
+                    title: const Text("Success"),
+                    content: const Text("Registered successfully!"),
                     actions: [
                       TextButton(
                         onPressed: () => Navigator.pop(context),
-                        child: Text("OK"),
+                        child: const Text("OK"),
                       )
                     ],
                   ),
                 );
-              } else if (state is RegisterFailure) {
+              } else if (state.hasError) {
                 showDialog(
                   context: context,
                   builder: (_) => AlertDialog(
-                    title: Text("Error"),
-                    content: Text(state.error),
+                    title: const Text("Error"),
+                    content: Text(state.errorMessage ?? "Something went wrong"),
                     actions: [
                       TextButton(
                         onPressed: () => Navigator.pop(context),
-                        child: Text("OK"),
+                        child: const Text("OK"),
                       )
                     ],
                   ),
@@ -71,48 +73,42 @@ class RegisterScreen extends StatelessWidget {
                     buildField(agencyName, 'Agency Name'),
                     buildField(agencyAddress, 'Agency Address'),
                     buildField(agencyLicenceNumber, 'Licence Number'),
-                    SizedBox(height: 10),
-                    // ElevatedButton(
-                    //   onPressed: () => cubit.pickUserImage(),
-                    //   child: Text(cubit.selectedImage == null
-                    //       ? "Pick User Image"
-                    //       : "Image Selected"),
-                    // ),
-                    // SizedBox(height: 20),
-                    // ElevatedButton(
-                    //   onPressed: () {
-                    //     if (_formKey.currentState!.validate()) {
-                    //       final imageBase64 = cubit.selectedImage != null
-                    //           ? cubit.encodeImage(cubit.selectedImage!)
-                    //           : "";
-                    //
-                    //       final user = UserModel(
-                    //         firstName: firstName.text,
-                    //         lastName: lastName.text,
-                    //         email: email.text,
-                    //         password: password.text,
-                    //         phoneNumber: phoneNumber.text,
-                    //         agencyName: agencyName.text,
-                    //         agencyAddress: agencyAddress.text,
-                    //         agencyLicenceNumber: agencyLicenceNumber.text,
-                    //         userImageBase64: imageBase64,
-                    //       );
-                    //
-                    //       cubit.registerUser(user);
-                    //     }
-                    //   },
-                    //   child: state is RegisterLoading
-                    //       ? CircularProgressIndicator()
-                    //       : Text('Register'),
-                    // ),
-                    // TextButton(
-                    //   onPressed: () => Navigator.push(context,
-                    //       // MaterialPageRoute(builder: (_) => LoginPage())),
-                    //   child: Text("Already registered? Login"),
-                    // ),
-                      TextButton(onPressed:(){
-                        SnackBar(content:Text("signUp successfully"));
-                      }, child:Text("SignUp"))
+                    const SizedBox(height: 20),
+                    ElevatedButton(
+                      onPressed: state.isLoading
+                          ? null
+                          : () {
+                        if (_formKey.currentState!.validate()) {
+                          final user = UserEntity(
+                            firstName: firstName.text,
+                            lastName: lastName.text,
+                            email: email.text,
+                            password: password.text,
+                            phoneNumber: phoneNumber.text,
+                            agencyName: agencyName.text,
+                            agencyAddress: agencyAddress.text,
+                            agencyLicenceNumber:
+                            agencyLicenceNumber.text,
+                            userImageBase64: "",
+                          );
+                          cubit.signUp(user);
+                        }
+                        Navigator.of(context).push(MaterialPageRoute(builder:(context){
+                          return OtpVerifyScreen();
+                        }));
+                      },
+                      child: state.isLoading
+                          ? const CircularProgressIndicator()
+                          : const Text('Register'),
+                    ),
+                    TextButton(
+                      onPressed: () {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(content: Text("Signup button clicked")),
+                        );
+                      },
+                      child: const Text("Already registered? Login"),
+                    ),
                   ],
                 ),
               );
@@ -126,12 +122,12 @@ class RegisterScreen extends StatelessWidget {
   Widget buildField(TextEditingController ctrl, String label,
       {bool obscureText = false}) {
     return Padding(
-      padding: EdgeInsets.only(bottom: 12),
+      padding: const EdgeInsets.only(bottom: 12),
       child: TextFormField(
         controller: ctrl,
         obscureText: obscureText,
         decoration: InputDecoration(
-          border: OutlineInputBorder(),
+          border: const OutlineInputBorder(),
           labelText: label,
         ),
         validator: (val) => val == null || val.isEmpty ? "Enter $label" : null,

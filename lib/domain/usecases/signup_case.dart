@@ -1,14 +1,13 @@
-
-
+import '../../core/common/api_response.dart';
 import '../entities/user_entities.dart';
 import '../repositories/repositories.dart';
 
-class RegisterUserUseCase {
+class SignupUseCase {
   final UserRepository repository;
-
-  RegisterUserUseCase(this.repository);
-
-  Future<String?> call(UserEntity user) {
+  SignupUseCase(this.repository);
+  Future<ApiResult?> call(UserEntity user) {
     return repository.register(user);
   }
 }
+
+
