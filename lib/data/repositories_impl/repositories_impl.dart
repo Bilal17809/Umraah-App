@@ -1,4 +1,6 @@
 import 'dart:convert';
+import 'package:umraah_app/data/model/login_model.dart';
+
 import '../model/registration_model.dart';
 import '../model/verifyopt_model.dart';
 import '/core/common/api_response.dart';
@@ -38,6 +40,23 @@ class UserRepositoryImpl implements UserRepository {
         return ApiResult(success: true, message: body['message'] ?? 'OTP Verified');
       } else {
         return ApiResult(success: false, message: body['message'] ?? 'OTP verification failed');
+      }
+    } catch (e) {
+      return ApiResult(success: false, message: "Invalid response from server");
+    }
+  }
+
+  @override
+  Future<ApiResult> login(LoginEntity login) async{
+    final loginModel = LoginModel.fromEntity(login);
+    final response = await remoteDataSource.loginUser(loginModel);
+    try {
+      final body = jsonDecode(response.body);
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        print("##### login Response: ${response.body}");
+        return ApiResult(success: true, message: body['message'] ?? 'user login');
+      } else {
+        return ApiResult(success: false, message: body['message'] ?? 'login failed');
       }
     } catch (e) {
       return ApiResult(success: false, message: "Invalid response from server");

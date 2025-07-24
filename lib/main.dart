@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:umraah_app/domain/usecases/login_case.dart';
 import 'package:umraah_app/domain/usecases/otp_case.dart';
 import 'package:umraah_app/domain/usecases/signup_case.dart';
+import 'package:umraah_app/presentation/login/bloc/login_cubit.dart';
 import 'package:umraah_app/presentation/signup/bloc/signup_cubit.dart';
 import 'package:umraah_app/presentation/signup/view/signup_page.dart';
 import 'package:umraah_app/presentation/verify_otp/bloc/verify_otp_cubit.dart';
@@ -15,21 +17,26 @@ void main() {
   final userRepository = UserRepositoryImpl(remoteDataSource);
   final registerUseCase = SignupUseCase(userRepository);
   final otpUseCase = OtpVerifyUseCase(userRepository);
+  final loginUseCase= LoginUseCase(userRepository);
 
   runApp(MyApp(
     registerUseCase: registerUseCase,
     otpUseCase: otpUseCase,
+    loginUseCase: loginUseCase,
   ));
 }
 
 class MyApp extends StatelessWidget {
   final SignupUseCase registerUseCase;
   final OtpVerifyUseCase otpUseCase;
+  final LoginUseCase loginUseCase;
 
   const MyApp({
     super.key,
     required this.registerUseCase,
     required this.otpUseCase,
+    required this.loginUseCase
+
   });
 
   @override
@@ -41,6 +48,9 @@ class MyApp extends StatelessWidget {
         ),
         BlocProvider(
           create: (_) => OtpVerifyCubit(otpUseCase),
+        ),
+        BlocProvider(
+          create: (_) => LoginCubit(loginUseCase),
         ),
       ],
       child: MaterialApp(
