@@ -1,5 +1,4 @@
-import '../../domain/entities/user_entities.dart';
-
+import '/domain/entities/user_entities.dart';
 class UserModel {
   final String firstName;
   final String lastName;
@@ -10,7 +9,6 @@ class UserModel {
   final String agencyAddress;
   final String agencyLicenceNumber;
   final String userImageBase64;
-
   UserModel({
     required this.firstName,
     required this.lastName,

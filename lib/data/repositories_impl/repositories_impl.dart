@@ -1,10 +1,10 @@
 import 'dart:convert';
-import '../model /verifyopt_model.dart';
+import '../model/registration_model.dart';
+import '../model/verifyopt_model.dart';
 import '/core/common/api_response.dart';
 import '/domain/entities/user_entities.dart';
 import '/domain/repositories/repositories.dart';
 import '../data_source/network_data_sr.dart';
-import '../model /registration_model.dart';
 
 class UserRepositoryImpl implements UserRepository {
   final AuthRemoteDataSource remoteDataSource;
