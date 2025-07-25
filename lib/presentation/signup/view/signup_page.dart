@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:umraah_app/presentation/login/view/login_view.dart';
+import 'package:umraah_app/presentation/profile/view/profile_view.dart';
 import 'package:umraah_app/presentation/signup/bloc/signup_cubit.dart';
 import 'package:umraah_app/presentation/signup/bloc/signup_state.dart';
 import '../../verify_otp/view/verify_otp_view.dart';
@@ -24,7 +26,14 @@ class SignupView extends StatelessWidget {
     final cubit = context.read<SignupCubit>();
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Register User')),
+      appBar: AppBar(title: const Text('Register User'),
+          actions: [
+            IconButton(onPressed:(){
+              Navigator.of(context).push(MaterialPageRoute(builder:(context)
+              =>ProfileScreen()));
+            }, icon:Icon(Icons.account_balance_sharp))
+        ],
+      ),
       body: Padding(
         padding: const EdgeInsets.all(16),
         child: SingleChildScrollView(
@@ -103,9 +112,9 @@ class SignupView extends StatelessWidget {
                     ),
                     TextButton(
                       onPressed: () {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(content: Text("Signup button clicked")),
-                        );
+                        Navigator.of(context).push(MaterialPageRoute(builder:(context){
+                          return LoginView();
+                        }));
                       },
                       child: const Text("Already registered? Login"),
                     ),

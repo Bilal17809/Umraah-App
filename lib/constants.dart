@@ -24,10 +24,14 @@ class AppUrls {
   String get rentAcar => '$_baseUrl/rent/rent';
   // AppUrls class
 }
-class ReturnResponse {
-  final bool boolValue;
-  final String message;
-  final Map<String, dynamic>? data;
-
-  ReturnResponse({required this.boolValue, required this.message, this.data});
-}
+// class ApiResult {
+//   final bool success;
+//   final String message;
+//   final dynamic data;
+//
+//   ApiResult({
+//     required this.success,
+//     required this.message,
+//     this.data,
+//   });
+// }

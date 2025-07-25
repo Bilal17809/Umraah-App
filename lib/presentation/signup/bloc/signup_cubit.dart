@@ -10,7 +10,6 @@ class SignupCubit extends Cubit<SignupState> {
 
   Future<void> signUp(UserEntity user) async {
     emit(state.copyWith(isLoading: true, errorMessage: null, isSuccess: false));
-
     final result = await _useCase(user);
     if (result!.success) {
       emit(state.copyWith(isLoading: false, isSuccess: true, errorMessage: null));
