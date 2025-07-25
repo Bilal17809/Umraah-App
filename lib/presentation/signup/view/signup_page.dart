@@ -1,5 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:umraah_app/core/common/custom_text_form_field.dart';
+import 'package:umraah_app/core/theme/app_colors.dart';
+import 'package:umraah_app/core/theme/app_styles.dart';
+import 'package:umraah_app/core/theme/app_theme.dart';
+import 'package:umraah_app/presentation/home/view/tab_bar_view/view/tab_bar_view.dart';
 import 'package:umraah_app/presentation/signup/bloc/signup_cubit.dart';
 import 'package:umraah_app/presentation/signup/bloc/signup_state.dart';
 import '../../verify_otp/view/verify_otp_view.dart';
@@ -24,6 +29,7 @@ class SignupView extends StatelessWidget {
     final cubit = context.read<SignupCubit>();
 
     return Scaffold(
+      backgroundColor: kWhite,
       appBar: AppBar(title: const Text('Register User')),
       body: Padding(
         padding: const EdgeInsets.all(16),
@@ -61,11 +67,9 @@ class SignupView extends StatelessWidget {
               }
             },
             builder: (context, state) {
-              return Form(
-                key: _formKey,
-                child: Column(
+              return Column(
                   children: [
-                    buildField(firstName, 'First Name'),
+                  buildField(firstName, "First Name"),
                     buildField(lastName, 'Last Name'),
                     buildField(email, 'Email'),
                     buildField(password, 'Password', obscureText: true),
@@ -73,9 +77,19 @@ class SignupView extends StatelessWidget {
                     buildField(agencyName, 'Agency Name'),
                     buildField(agencyAddress, 'Agency Address'),
                     buildField(agencyLicenceNumber, 'Licence Number'),
-                    const SizedBox(height: 20),
-                    ElevatedButton(
-                      onPressed: state.isLoading
+                  const SizedBox(height: 20),
+                  ElevatedButton(
+                    style: AppTheme.elevatedButtonStyle.copyWith(
+                      backgroundColor: MaterialStateProperty.all(Colors.green),
+                      foregroundColor: MaterialStateProperty.all(Colors.white),
+                      shape: MaterialStateProperty.all(
+                        RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(16),
+                        ),
+                      ),
+                    ),
+                    onPressed:
+                        state.isLoading
                           ? null
                           : () {
                         if (_formKey.currentState!.validate()) {
@@ -100,18 +114,25 @@ class SignupView extends StatelessWidget {
                       child: state.isLoading
                           ? const CircularProgressIndicator()
                           : const Text('Register'),
-                    ),
+                  ),
                     TextButton(
                       onPressed: () {
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (context) {
+                            return AgencyDashboardScreen();
+                          },
+                        ),
+                      );
                         ScaffoldMessenger.of(context).showSnackBar(
                           const SnackBar(content: Text("Signup button clicked")),
                         );
                       },
                       child: const Text("Already registered? Login"),
                     ),
-                  ],
-                ),
+                ],
               );
+              
             },
           ),
         ),
@@ -119,18 +140,31 @@ class SignupView extends StatelessWidget {
     );
   }
 
-  Widget buildField(TextEditingController ctrl, String label,
+  Widget buildField(
+    TextEditingController ctrl,
+    String label,
+    // String hintText,
       {bool obscureText = false}) {
     return Padding(
-      padding: const EdgeInsets.only(bottom: 12),
-      child: TextFormField(
-        controller: ctrl,
-        obscureText: obscureText,
-        decoration: InputDecoration(
-          border: const OutlineInputBorder(),
-          labelText: label,
+      padding: const EdgeInsets.symmetric(horizontal: 06,vertical: 10),
+      child: Container(
+        height: 64,
+        width: double.infinity,
+        decoration: roundedDecoration.copyWith(
+          borderRadius: BorderRadius.circular(40),
         ),
-        validator: (val) => val == null || val.isEmpty ? "Enter $label" : null,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 10),
+          child: Center(
+            child: CustomTextFormField(
+              hintText: label,
+              controller: ctrl,
+              obscureText: obscureText,
+              validator:
+                  (val) => val == null || val.isEmpty ? "Enter $label" : null,
+            ),
+          ),
+        ),
       ),
     );
   }
