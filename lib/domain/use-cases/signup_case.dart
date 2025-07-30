@@ -1,4 +1,4 @@
-import '../../core/common/api_response.dart';
+import '../../core/network/api_response.dart';
 import '../entities/user_entities.dart';
 import '../repositories/repositories.dart';
 

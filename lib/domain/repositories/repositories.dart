@@ -1,6 +1,9 @@
-import '../../core/common/api_response.dart';
+import '/core/network/api_response.dart';
 import '../entities/user_entities.dart';
+
 abstract class UserRepository {
-  Future<ApiResult?> register(UserEntity user);
-  Future<ApiResult> otpVerify(OtpEntity user);
+  Future<ApiResult<dynamic>> register(UserEntity user);
+  Future<ApiResult<dynamic>> otpVerify(OtpEntity user);
+  Future<ApiResult<dynamic>> login(LoginEntity login);
+  Future<ApiResult<dynamic>> profile();
 }

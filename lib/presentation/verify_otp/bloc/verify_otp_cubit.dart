@@ -1,6 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:umraah_app/presentation/verify_otp/bloc/verify_otp_state.dart';
-import '../../../domain/usecases/otp_case.dart';
+import '/presentation/verify_otp/bloc/verify_otp_state.dart';
+import '/domain/use-cases/otp_case.dart';
 import '/domain/entities/user_entities.dart';
 
 class OtpVerifyCubit extends Cubit<OtpVerifyState> {

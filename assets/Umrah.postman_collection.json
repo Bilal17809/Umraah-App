@@ -1,0 +1,510 @@
+{
+	"info": {
+		"_postman_id": "be6b7f81-bc0e-4c2b-b189-32638c5521a0",
+		"name": "Umrah",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "8687801"
+	},
+	"item": [
+		{
+			"name": "user",
+			"item": [
+				{
+					"name": "register",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"firstName\": \"Ali\",\n    \"lastName\": \"Ahmed\",\n    \"email\": \"agent2@example.com\",\n    \"password\": \"secret123\",\n    \"phoneNumber\": \"21212121212\",\n    \"agencyName\": \"Naeem\",\n    \"agencyAddress\": \"islamabad\",\n    \"agencyLicenceNumber\": \"1212\",\n    \"userType\" : \"2\",\n    \"agencyImage\":\"\",\n    \"userImage\" : \"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\"\n}\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{umrahBaseUrl}}register",
+							"host": [
+								"{{umrahBaseUrl}}register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "login",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n   \n    \"email\": \"ali@example.com\",\n    \"password\": \"secret123\"\n  \n}\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{umrahBaseUrl}}login",
+							"host": [
+								"{{umrahBaseUrl}}login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "verifyOtp",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n   \n    \"otp\": \"1234\",\n     \"email\": \"ali@example.com\"\n  \n}\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{umrahBaseUrl}}verifyOtp",
+							"host": [
+								"{{umrahBaseUrl}}verifyOtp"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "profile",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vbG9jYWxob3N0L3VtcmFoQXBpLyIsImF1ZCI6Imh0dHA6Ly9sb2NhbGhvc3QvdW1yYWhBcGkvIiwiaWF0IjoxNzUyOTA2NjA1LCJleHAiOjE3NTI5OTMwMDUsInVzZXIiOnsiaWQiOiIxMSIsImVtYWlsIjoiYWxpQGV4YW1wbGUuY29tIiwiZmlyc3ROYW1lIjoiQWxpIiwibGFzdE5hbWUiOiJBaG1lZCIsInBob25lTnVtYmVyIjoiMjEyMTIxMjEyMTIiLCJ1c2VySW1hZ2UiOiJ1c2VyXzE3NTI5MDQ4OTIucG5nIiwiYWdlbmN5SW1hZ2UiOm51bGwsImNyZWF0ZWRBdCI6IjIwMjUtMDctMTkgMTE6MDE6MzIiLCJ1c2VyVHlwZSI6IlVTRVIifX0.9XueTHuUdqxLpn0VlEESuwQ_OdpYTrHl3Ud0c9mc5UI",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{umrahBaseUrl}}profile",
+							"host": [
+								"{{umrahBaseUrl}}profile"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "updateProfile",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vbG9jYWxob3N0L3VtcmFoQXBpLyIsImF1ZCI6Imh0dHA6Ly9sb2NhbGhvc3QvdW1yYWhBcGkvIiwiaWF0IjoxNzUyOTM0ODU4LCJleHAiOjE3NTMwMjEyNTgsInVzZXIiOnsiaWQiOiIxNCIsImVtYWlsIjoiYWdlbnQyQGV4YW1wbGUuY29tIiwiZmlyc3ROYW1lIjoiQWxpIiwibGFzdE5hbWUiOiJBaG1lZCIsInBob25lTnVtYmVyIjoiMjEyMTIxMjEyMTIiLCJ1c2VySW1hZ2UiOiJ1c2VyXzE3NTI5MzQ3MDAucG5nIiwiYWdlbmN5SW1hZ2UiOm51bGwsImNyZWF0ZWRBdCI6IjIwMjUtMDctMTkgMTk6MTg6MjAiLCJ1c2VyVHlwZSI6IkFHRU5UIn19.s8MUDeDpV8gNyE-AuYCOuIqIyOwuScYxgFYFfT-v6Vs",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"firstName\": \"naeem\",\n    \"lastName\": \"khan\",\n    \"phoneNumber\": \"21212121212\",\n    \"agencyImage\":\"\",\n    \"userImage\" : \"\",\n     \"agencyName\": \"test\",\n    \"agencyAddress\": \"karachi\",\n    \"agencyLicenceNumber\": \"333\"\n}\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{umrahBaseUrl}}updateProfile",
+							"host": [
+								"{{umrahBaseUrl}}updateProfile"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "logout",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vbG9jYWxob3N0L3VtcmFoQXBpLyIsImF1ZCI6Imh0dHA6Ly9sb2NhbGhvc3QvdW1yYWhBcGkvIiwiaWF0IjoxNzUyOTA0Mjc5LCJleHAiOjE3NTI5OTA2NzksInVzZXIiOnsiaWQiOiIxMCIsImVtYWlsIjoiYWxpQGV4YW1wbGUuY29tIiwiZmlyc3ROYW1lIjoiQWxpIiwibGFzdE5hbWUiOiJBaG1lZCIsInBob25lTnVtYmVyIjoiMjEyMTIxMjEyMTIiLCJ1c2VySW1hZ2UiOiJ1c2VyXzE3NTI5MDI4NDMucG5nIiwiYWdlbmN5SW1hZ2UiOm51bGwsImNyZWF0ZWRBdCI6IjIwMjUtMDctMTkgMTA6Mjc6MjMiLCJ1c2VyVHlwZSI6IlVTRVIifX0._hUy23-163C5-AsJqisxr7lkWuwopX5Xj2EtYEYTvbk",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{umrahBaseUrl}}logout",
+							"host": [
+								"{{umrahBaseUrl}}logout"
+							],
+							"query": [
+								{
+									"key": "",
+									"value": null,
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "deleteAccount",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vbG9jYWxob3N0L3VtcmFoQXBpLyIsImF1ZCI6Imh0dHA6Ly9sb2NhbGhvc3QvdW1yYWhBcGkvIiwiaWF0IjoxNzUyOTA2NjA1LCJleHAiOjE3NTI5OTMwMDUsInVzZXIiOnsiaWQiOiIxMSIsImVtYWlsIjoiYWxpQGV4YW1wbGUuY29tIiwiZmlyc3ROYW1lIjoiQWxpIiwibGFzdE5hbWUiOiJBaG1lZCIsInBob25lTnVtYmVyIjoiMjEyMTIxMjEyMTIiLCJ1c2VySW1hZ2UiOiJ1c2VyXzE3NTI5MDQ4OTIucG5nIiwiYWdlbmN5SW1hZ2UiOm51bGwsImNyZWF0ZWRBdCI6IjIwMjUtMDctMTkgMTE6MDE6MzIiLCJ1c2VyVHlwZSI6IlVTRVIifX0.9XueTHuUdqxLpn0VlEESuwQ_OdpYTrHl3Ud0c9mc5UI",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{umrahBaseUrl}}deleteAccount",
+							"host": [
+								"{{umrahBaseUrl}}deleteAccount"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "changePassword",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vbG9jYWxob3N0L3VtcmFoQXBpLyIsImF1ZCI6Imh0dHA6Ly9sb2NhbGhvc3QvdW1yYWhBcGkvIiwiaWF0IjoxNzUyOTI5OTE4LCJleHAiOjE3NTMwMTYzMTgsInVzZXIiOnsiaWQiOiIxMiIsImVtYWlsIjoiYWxpQGV4YW1wbGUuY29tIiwiZmlyc3ROYW1lIjoiQWxpIiwibGFzdE5hbWUiOiJBaG1lZCIsInBob25lTnVtYmVyIjoiMjEyMTIxMjEyMTIiLCJ1c2VySW1hZ2UiOiJ1c2VyXzE3NTI5MDcwMjgucG5nIiwiYWdlbmN5SW1hZ2UiOm51bGwsImNyZWF0ZWRBdCI6IjIwMjUtMDctMTkgMTE6Mzc6MDgiLCJ1c2VyVHlwZSI6IlVTRVIifX0.taYpRqo742ceXgrde4kXgJVy7cPLFsk7JcZbnzYzW54",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"currentPassword\": \"newPass456\",\n  \"newPassword\": \"secret123\"\n}\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{umrahBaseUrl}}changePassword",
+							"host": [
+								"{{umrahBaseUrl}}changePassword"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "forgotPassword",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"email\": \"naeem0313@gmail.com\"\n}\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{umrahBaseUrl}}forgotPassword",
+							"host": [
+								"{{umrahBaseUrl}}forgotPassword"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "resetPassword",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"token\": \"0c3e1ea5f5f033c7d36c4f1bfc0f8c47f42812eaf42c27ee2f7fa0878ac08dfb\",\n  \"newPassword\": \"Password123\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{umrahBaseUrl}}resetPassword",
+							"host": [
+								"{{umrahBaseUrl}}resetPassword"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "resendOtp",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"email\": \"user@example.com\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{umrahBaseUrl}}resendOtp",
+							"host": [
+								"{{umrahBaseUrl}}resendOtp"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "agent package",
+			"item": [
+				{
+					"name": "createPackage",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vbG9jYWxob3N0L3VtcmFoQXBpLyIsImF1ZCI6Imh0dHA6Ly9sb2NhbGhvc3QvdW1yYWhBcGkvIiwiaWF0IjoxNzUyOTI5OTE4LCJleHAiOjE3NTMwMTYzMTgsInVzZXIiOnsiaWQiOiIxMiIsImVtYWlsIjoiYWxpQGV4YW1wbGUuY29tIiwiZmlyc3ROYW1lIjoiQWxpIiwibGFzdE5hbWUiOiJBaG1lZCIsInBob25lTnVtYmVyIjoiMjEyMTIxMjEyMTIiLCJ1c2VySW1hZ2UiOiJ1c2VyXzE3NTI5MDcwMjgucG5nIiwiYWdlbmN5SW1hZ2UiOm51bGwsImNyZWF0ZWRBdCI6IjIwMjUtMDctMTkgMTE6Mzc6MDgiLCJ1c2VyVHlwZSI6IlVTRVIifX0.taYpRqo742ceXgrde4kXgJVy7cPLFsk7JcZbnzYzW54",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"noOfDays\": 10,\n  \"startDate\": \"2025-07-10\",\n  \"makkahHotelName\": \"Makkah Grand Hotel\",\n  \"makkahHotelDistance\": \"500m\",\n  \"makkahHotelRating\": 4.5,\n  \"madinaHotelName\": \"Madina Paradise\",\n  \"madinaHotelDistance\": \"300m\",\n  \"madinaHotelRating\": 4.2,\n  \"detail\": \"This package includes everything needed for a comfortable trip.\",\n  \"flightNumber\": \"SV102\",\n  \"airLine\": \"Saudia Airlines\",\n  \"packageImage\": \"\",\n\n  \"packageSharedPrice\": \"1500\",\n  \"packageTriplePrice\": \"2000\",\n  \"packageDoublePrice\": \"2500\",\n  \"packageInclude\": \"Flights, Hotels, Transport, Meals\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{umrahBaseUrl}}createPackage",
+							"host": [
+								"{{umrahBaseUrl}}createPackage"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "updatePackage",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vbG9jYWxob3N0L3VtcmFoQXBpLyIsImF1ZCI6Imh0dHA6Ly9sb2NhbGhvc3QvdW1yYWhBcGkvIiwiaWF0IjoxNzUyOTM1MzQyLCJleHAiOjE3NTMwMjE3NDIsInVzZXIiOnsiaWQiOiIxMyIsImVtYWlsIjoiYWdlbnRAZXhhbXBsZS5jb20iLCJmaXJzdE5hbWUiOiJBbGkiLCJsYXN0TmFtZSI6IkFobWVkIiwicGhvbmVOdW1iZXIiOiIyMTIxMjEyMTIxMiIsInVzZXJJbWFnZSI6InVzZXJfMTc1MjkzNDA3OC5wbmciLCJhZ2VuY3lJbWFnZSI6bnVsbCwiY3JlYXRlZEF0IjoiMjAyNS0wNy0xOSAxOTowNzo1OCIsInVzZXJUeXBlIjoiQUdFTlQifX0.qsuWDCxrJLR_C3Hhl-LcUHi9Lf7JU8zgPu07IIa16BI",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"noOfDays\": 10,\n  \"startDate\": \"2025-08-01\",\n  \"makkahHotelName\": \"Makkah  Hotel\",\n  \"makkahHotelDistance\": \"500m\",\n  \"makkahHotelRating\": \"5-star\",\n  \"madinaHotelName\": \"Madina Elite Hotel\",\n  \"madinaHotelDistance\": \"300m\",\n  \"madinaHotelRating\": \"4-star\",\n  \"detail\": \"Luxury package including Ziyarat tour.\",\n  \"flightNumber\": \"SV123\",\n  \"airLine\": \"Saudi Airlines\",\n  \"status\": 0,\n  \"packageSharedPrice\": 1200,\n  \"packageTriplePrice\": 1400,\n  \"packageDoublePrice\": 1600,\n  \"packageInclude\": \"Accommodation, Transport, Guide\",\n  \"packageImage\": \"\"  \n}\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{umrahBaseUrl}}updatePackage/1",
+							"host": [
+								"{{umrahBaseUrl}}updatePackage"
+							],
+							"path": [
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "myPackages?status=2",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vbG9jYWxob3N0L3VtcmFoQXBpLyIsImF1ZCI6Imh0dHA6Ly9sb2NhbGhvc3QvdW1yYWhBcGkvIiwiaWF0IjoxNzUyOTM0MTA2LCJleHAiOjE3NTMwMjA1MDYsInVzZXIiOnsiaWQiOiIxMyIsImVtYWlsIjoiYWdlbnRAZXhhbXBsZS5jb20iLCJmaXJzdE5hbWUiOiJBbGkiLCJsYXN0TmFtZSI6IkFobWVkIiwicGhvbmVOdW1iZXIiOiIyMTIxMjEyMTIxMiIsInVzZXJJbWFnZSI6InVzZXJfMTc1MjkzNDA3OC5wbmciLCJhZ2VuY3lJbWFnZSI6bnVsbCwiY3JlYXRlZEF0IjoiMjAyNS0wNy0xOSAxOTowNzo1OCIsInVzZXJUeXBlIjoiQUdFTlQifX0.MTxIyxfPIsThdibAxhvvqYhWRVwQVVX0eL3nJAzSoQ0",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{umrahBaseUrl}}myPackages?status=2",
+							"host": [
+								"{{umrahBaseUrl}}myPackages"
+							],
+							"query": [
+								{
+									"key": "status",
+									"value": "2",
+									"description": "0 in-review, 1 rejected, 2 expire, 3 active\t"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "deletePackage",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vbG9jYWxob3N0L3VtcmFoQXBpLyIsImF1ZCI6Imh0dHA6Ly9sb2NhbGhvc3QvdW1yYWhBcGkvIiwiaWF0IjoxNzUyOTI5OTE4LCJleHAiOjE3NTMwMTYzMTgsInVzZXIiOnsiaWQiOiIxMiIsImVtYWlsIjoiYWxpQGV4YW1wbGUuY29tIiwiZmlyc3ROYW1lIjoiQWxpIiwibGFzdE5hbWUiOiJBaG1lZCIsInBob25lTnVtYmVyIjoiMjEyMTIxMjEyMTIiLCJ1c2VySW1hZ2UiOiJ1c2VyXzE3NTI5MDcwMjgucG5nIiwiYWdlbmN5SW1hZ2UiOm51bGwsImNyZWF0ZWRBdCI6IjIwMjUtMDctMTkgMTE6Mzc6MDgiLCJ1c2VyVHlwZSI6IlVTRVIifX0.taYpRqo742ceXgrde4kXgJVy7cPLFsk7JcZbnzYzW54",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{umrahBaseUrl}}deletePackage/3",
+							"host": [
+								"{{umrahBaseUrl}}deletePackage"
+							],
+							"path": [
+								"3"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "packages",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vbG9jYWxob3N0L3VtcmFoQXBpLyIsImF1ZCI6Imh0dHA6Ly9sb2NhbGhvc3QvdW1yYWhBcGkvIiwiaWF0IjoxNzUyOTI5OTE4LCJleHAiOjE3NTMwMTYzMTgsInVzZXIiOnsiaWQiOiIxMiIsImVtYWlsIjoiYWxpQGV4YW1wbGUuY29tIiwiZmlyc3ROYW1lIjoiQWxpIiwibGFzdE5hbWUiOiJBaG1lZCIsInBob25lTnVtYmVyIjoiMjEyMTIxMjEyMTIiLCJ1c2VySW1hZ2UiOiJ1c2VyXzE3NTI5MDcwMjgucG5nIiwiYWdlbmN5SW1hZ2UiOm51bGwsImNyZWF0ZWRBdCI6IjIwMjUtMDctMTkgMTE6Mzc6MDgiLCJ1c2VyVHlwZSI6IlVTRVIifX0.taYpRqo742ceXgrde4kXgJVy7cPLFsk7JcZbnzYzW54",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{umrahBaseUrl}}packages",
+					"host": [
+						"{{umrahBaseUrl}}packages"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "packageDetail/1",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vbG9jYWxob3N0L3VtcmFoQXBpLyIsImF1ZCI6Imh0dHA6Ly9sb2NhbGhvc3QvdW1yYWhBcGkvIiwiaWF0IjoxNzUyOTI5OTE4LCJleHAiOjE3NTMwMTYzMTgsInVzZXIiOnsiaWQiOiIxMiIsImVtYWlsIjoiYWxpQGV4YW1wbGUuY29tIiwiZmlyc3ROYW1lIjoiQWxpIiwibGFzdE5hbWUiOiJBaG1lZCIsInBob25lTnVtYmVyIjoiMjEyMTIxMjEyMTIiLCJ1c2VySW1hZ2UiOiJ1c2VyXzE3NTI5MDcwMjgucG5nIiwiYWdlbmN5SW1hZ2UiOm51bGwsImNyZWF0ZWRBdCI6IjIwMjUtMDctMTkgMTE6Mzc6MDgiLCJ1c2VyVHlwZSI6IlVTRVIifX0.taYpRqo742ceXgrde4kXgJVy7cPLFsk7JcZbnzYzW54",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{umrahBaseUrl}}packageDetail/1",
+					"host": [
+						"{{umrahBaseUrl}}packageDetail"
+					],
+					"path": [
+						"1"
+					],
+					"query": [
+						{
+							"key": "Au",
+							"value": null,
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

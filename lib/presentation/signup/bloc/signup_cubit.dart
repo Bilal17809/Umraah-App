@@ -1,7 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:umraah_app/presentation/signup/bloc/signup_state.dart';
 import '/domain/entities/user_entities.dart';
-import '/domain/usecases/signup_case.dart';
+import '/domain/use-cases/signup_case.dart';
 
 class SignupCubit extends Cubit<SignupState> {
   final SignupUseCase _useCase;
@@ -10,7 +10,6 @@ class SignupCubit extends Cubit<SignupState> {
 
   Future<void> signUp(UserEntity user) async {
     emit(state.copyWith(isLoading: true, errorMessage: null, isSuccess: false));
-
     final result = await _useCase(user);
     if (result!.success) {
       emit(state.copyWith(isLoading: false, isSuccess: true, errorMessage: null));
