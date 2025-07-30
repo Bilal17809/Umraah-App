@@ -1,6 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '/domain/entities/user_entities.dart';
-import '/domain/usecases/login_case.dart';
+import '/domain/use-cases/login_case.dart';
 import 'login_state.dart';
 
 class LoginCubit extends Cubit<LoginState> {

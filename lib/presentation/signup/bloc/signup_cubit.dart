@@ -1,7 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:umraah_app/presentation/signup/bloc/signup_state.dart';
 import '/domain/entities/user_entities.dart';
-import '/domain/usecases/signup_case.dart';
+import '/domain/use-cases/signup_case.dart';
 
 class SignupCubit extends Cubit<SignupState> {
   final SignupUseCase _useCase;

@@ -1,5 +1,5 @@
 import 'package:bloc/bloc.dart';
-import 'package:umraah_app/domain/usecases/profile_case.dart';
+import '/domain/use-cases/profile_case.dart';
 import 'package:umraah_app/presentation/profile/bloc/profile_state.dart';
 
 class ProfileCubit extends Cubit<ProfileState>{
