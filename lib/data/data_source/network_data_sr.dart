@@ -29,4 +29,9 @@ class AuthRemoteDataSource {
   Future<ApiResult> profile(String token) {
     return _client.get(ApiRoutes.profile, token: token);
   }
+
+  // logout
+  Future<ApiResult> logout(String token){
+    return _client.get(ApiRoutes.logout,token: token);
+  }
 }

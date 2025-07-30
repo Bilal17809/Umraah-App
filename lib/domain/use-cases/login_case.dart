@@ -1,5 +1,5 @@
 import 'package:umraah_app/domain/entities/user_entities.dart';
-import '../../core/network/api_response.dart';
+import '/core/network/api_response.dart';
 import '../repositories/repositories.dart';
 
 class LoginUseCase {

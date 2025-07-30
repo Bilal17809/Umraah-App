@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:umraah_app/presentation/user_type/view/user_type.dart';
 import '/domain/use-cases/login_case.dart';
 import '/domain/use-cases/otp_case.dart';
 import '/domain/use-cases/profile_case.dart';
@@ -14,6 +15,7 @@ import 'data/data_source/network_data_sr.dart';
 import 'data/repositories_impl/repositories_impl.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
   final apiClient = ApiClient();
   final remoteDataSource = AuthRemoteDataSource(apiClient);
   final userRepository = UserRepositoryImpl(remoteDataSource);
@@ -65,7 +67,7 @@ class MyApp extends StatelessWidget {
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         title: 'Umrah App',
-        home: SignupView(),
+        home: UserType(),
       ),
     );
   }

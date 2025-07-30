@@ -1,10 +1,10 @@
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:umraah_app/data/model/login_model.dart';
 import 'package:umraah_app/data/model/registration_model.dart';
 import 'package:umraah_app/data/model/verifyopt_model.dart';
-import '../../core/network/api_response.dart';
-import '../../domain/entities/user_entities.dart';
-import '../../domain/repositories/repositories.dart';
+import '/core/local_data_storage/local_storage.dart';
+import '/core/network/api_response.dart';
+import '/domain/entities/user_entities.dart';
+import '/domain/repositories/repositories.dart';
 import '../data_source/network_data_sr.dart';
 
 class UserRepositoryImpl implements UserRepository {
@@ -29,8 +29,7 @@ class UserRepositoryImpl implements UserRepository {
     final result = await remoteDataSource.loginUser(loginModel);
     if (result.success && result.data != null) {
       final token = result.data;
-      final prefs = await SharedPreferences.getInstance();
-      await prefs.setString('token', token);
+      await SecureStorage.saveToken(token);
     }
     return result;
   }
@@ -38,16 +37,20 @@ class UserRepositoryImpl implements UserRepository {
 
   @override
   Future<ApiResult> profile() async {
-    final token = await getTokenFromStorage();
+    final token = await SecureStorage.getToken();
     if (token == null) {
       return ApiResult(success: false, message: "Token not found");
     }
     return await remoteDataSource.profile(token);
   }
+
+  @override
+  Future<ApiResult> logout() async{
+    final token = await SecureStorage.getToken();
+    if(token == null){
+      return ApiResult(success: false, message:"Token not found");
+    }
+    return await remoteDataSource.logout(token);
+  }
 }
 
-
-Future<String?> getTokenFromStorage() async {
-  final prefs = await SharedPreferences.getInstance();
-  return prefs.getString('token');
-}

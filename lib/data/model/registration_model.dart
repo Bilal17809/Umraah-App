@@ -1,4 +1,5 @@
-import '/domain/entities/user_entities.dart';
+import '../../domain/entities/user_entities.dart';
+
 class UserModel {
   final String firstName;
   final String lastName;
@@ -9,6 +10,9 @@ class UserModel {
   final String agencyAddress;
   final String agencyLicenceNumber;
   final String userImageBase64;
+  final String userType;
+  final String agencyImageBase64;
+
   UserModel({
     required this.firstName,
     required this.lastName,
@@ -19,6 +23,8 @@ class UserModel {
     required this.agencyAddress,
     required this.agencyLicenceNumber,
     required this.userImageBase64,
+    required this.userType,
+    required this.agencyImageBase64,
   });
 
   Map<String, dynamic> toJson() => {
@@ -30,9 +36,9 @@ class UserModel {
     "agencyName": agencyName,
     "agencyAddress": agencyAddress,
     "agencyLicenceNumber": agencyLicenceNumber,
-    "userType": "2",
-    "agencyImage": "",
     "userImage": userImageBase64,
+    "userType": userType,
+    "agencyImage": agencyImageBase64,
   };
 
   factory UserModel.fromEntity(UserEntity entity) {
@@ -46,6 +52,8 @@ class UserModel {
       agencyAddress: entity.agencyAddress,
       agencyLicenceNumber: entity.agencyLicenceNumber,
       userImageBase64: entity.userImageBase64,
+      userType: entity.userType,
+      agencyImageBase64: entity.agencyImageBase64,
     );
   }
 }

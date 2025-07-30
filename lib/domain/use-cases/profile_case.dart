@@ -9,4 +9,8 @@ class ProfileUseCase {
   Future<ApiResult?> call() {
     return repository.profile();
   }
+
+  Future<ApiResult?> call2(){
+    return repository.logout();
+  }
 }
