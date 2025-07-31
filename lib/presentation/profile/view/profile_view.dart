@@ -1,97 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:umraah_app/core/route/route.dart';
+import 'package:umraah_app/core/theme/app_styles.dart';
 import 'package:umraah_app/presentation/profile/bloc/profile_cubit.dart';
 import 'package:umraah_app/presentation/profile/bloc/profile_state.dart';
-
-// class ProfileScreen extends StatefulWidget {
-//   const ProfileScreen({super.key});
-//
-//   @override
-//   State<ProfileScreen> createState() => _ProfileScreenState();
-// }
-//
-// class _ProfileScreenState extends State<ProfileScreen> {
-//   @override
-//   void initState() {
-//     super.initState();
-//     context.read<ProfileCubit>().getProfile();
-//   }
-//
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       // appBar: AppBar(
-//       //   title: const Text('My Profile'),
-//       //   actions: [
-//       //     BlocListener<ProfileCubit, ProfileState>(
-//       //       listener: (context, state) {
-//       //         if (state.isSuccess) {
-//       //           ScaffoldMessenger.of(context).showSnackBar(
-//       //             SnackBar(content: Text("Logout successful")),
-//       //           );
-//       //         }
-//       //       },
-//       //       child: IconButton(
-//       //         icon: Icon(Icons.account_balance),
-//       //         onPressed: () {
-//       //           context.read<ProfileCubit>().logout();
-//       //         },
-//       //       ),
-//       //     ),
-//       //   ],
-//       //
-//       //
-//       // ),
-//       body: BlocBuilder<ProfileCubit, ProfileState>(
-//         builder: (context, state) {
-//           if (state.isLoading) {
-//             return const Center(child: CircularProgressIndicator());
-//           }
-//
-//           if (state.errorMessage != null) {
-//             return Center(
-//               child: Text(
-//                 state.errorMessage!,
-//                 style: const TextStyle(color: Colors.red),
-//               ),
-//             );
-//           }
-//
-//           if (state.isSuccess && state.profileData != null) {
-//             final profileData = state.profileData;
-//
-//
-//
-//             return Padding(
-//               padding: const EdgeInsets.all(16.0),
-//               child: Column(
-//                 crossAxisAlignment: CrossAxisAlignment.start,
-//                 children: [
-//               Text("FName: ${profileData?['user']?['firstName'] ?? 'N/A'}"),
-//                   Text("LName: ${profileData?['user']?['lastName'] ?? 'N/A'}"),
-//                   Text("UserT: ${profileData?['user']?['userType'] ?? 'N/A'}"),
-//                   Text("Phone: ${profileData?['user']?['phoneNumber'] ?? 'N/A'}"),
-//               Text("Email: ${profileData?['user']?['email'] ?? 'N/A'}"),
-//
-//                   // Add more fields
-//                 ],
-//               ),
-//             );
-//           }
-//
-//           return const Center(child: Text("No profile data available."));
-//         },
-//       ),
-//     );
-//   }
-// }
 import 'dart:io';
-import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:umraah_app/core/theme/app_colors.dart';
-import 'package:umraah_app/core/theme/app_theme.dart';
-import '/core/theme/app_styles.dart';
+import 'package:flutter/material.dart';
+import '/core/route/route_name.dart';
+import '/core/theme/app_theme.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
@@ -101,6 +19,189 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
+  @override
+  void initState() {
+    super.initState();
+    context.read<ProfileCubit>().getProfile();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: kWhiteF7,
+      body: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16.0),
+          child: BlocBuilder<ProfileCubit, ProfileState>(
+            builder: (context, state) {
+              if (state.isLoading) {
+                return const Center(child: CircularProgressIndicator());
+              }
+              if (state.errorMessage != null) {
+                return Center(child: Text(state.errorMessage!, style: const TextStyle(color: Colors.red)));
+              }
+              final user = state.profileData?['user'];
+              final rawUserType = (user?['userType'] ?? '').toString().toUpperCase();
+              final int userType = rawUserType == 'AGENT' ? 2 : 1;
+
+              return Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const SizedBox(height: 20),
+                  Container(
+                    padding: const EdgeInsets.all(16),
+                    decoration: roundedDecoration,
+                    child: Row(
+                      children: [
+                        const CircleAvatar(
+                          radius: 50,
+                          backgroundImage: AssetImage('assets/avatar_placeholder.png'),
+                        ),
+                        const SizedBox(width: 16),
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                '${user?['firstName'] ?? ''} ${user?['lastName'] ?? ''}',
+                                style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                              ),
+                              const SizedBox(height: 4),
+                              Text(
+                                user?['email'] ?? '',
+                                style: const TextStyle(fontSize: 16, color: Colors.grey),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+
+                  const SizedBox(height: 24),
+
+                  Expanded(
+                    child: SingleChildScrollView(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        spacing: 14,
+                        children: [
+                          const _CellTitle(title: 'Settings'),
+                          _AccountCell(
+                            icon: Icons.person,
+                            title: 'Personal information',
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (_) => const UpdateProfile(),
+                                ),
+                              );
+                            },
+                          ),
+                          _AccountCell(icon: Icons.report, title: 'Report an Issue', onTap: () {}),
+                          _AccountCell(icon: Icons.privacy_tip, title: 'Privacy & Security', onTap: () {}),
+                          _AccountCell(
+                            icon: Icons.delete_forever,
+                            title: 'Delete Account',
+                            onTap: () {
+                              context.read<ProfileCubit>().delete();
+                              Navigator.pushNamedAndRemoveUntil(
+                                context,
+                                RoutesName.userTypePage,
+                                    (route) => false,
+                                arguments: userType.toString(),
+                              );
+                            },
+                          ),
+                          _AccountCell(
+                            icon: Icons.logout_outlined,
+                            title: 'Logout',
+                            onTap: () async {
+                              await context.read<ProfileCubit>().logout();
+                              if (context.mounted) {
+                                Navigator.pushNamedAndRemoveUntil(
+                                  context,
+                                  RoutesName.loginPage,
+                                      (route) => false,
+                                  arguments: userType.toString(),
+                                );
+                              }
+                            },
+                          ),
+                          const _CellTitle(title: 'Help & Feedback'),
+                          const SizedBox(height: 12),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
+              );
+            },
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+
+
+class _AccountCell extends StatelessWidget {
+  final IconData icon;
+  final String title;
+  final VoidCallback onTap;
+
+  const _AccountCell({
+    required this.icon,
+    required this.title,
+    required this.onTap,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Material(
+      elevation: 0.5,
+      borderRadius: BorderRadius.circular(12),
+      color: kWhite,
+      child: ListTile(
+        leading: CircleAvatar(
+          backgroundColor: primaryColor.withValues(alpha: 0.2),
+          child: Icon(icon, color: primaryColor),
+        ),
+        title: Text(title,),
+        trailing: const Icon(Icons.chevron_right),
+        contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+        onTap: onTap,
+      ),
+    );
+  }
+}
+
+class _CellTitle extends StatelessWidget {
+  final String title;
+
+  const _CellTitle({required this.title});
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(top: 12),
+      child: Text(
+        title.toUpperCase(),
+      ),
+    );
+  }
+}
+
+class UpdateProfile extends StatefulWidget {
+  const UpdateProfile({super.key});
+
+  @override
+  State<UpdateProfile> createState() => _UpdateProfileState();
+}
+
+class _UpdateProfileState extends State<UpdateProfile> {
   File? _profileImage;
 
   @override

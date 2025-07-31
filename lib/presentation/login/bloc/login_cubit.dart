@@ -12,9 +12,18 @@ class LoginCubit extends Cubit<LoginState> {
     emit(state.copyWith(isLoading: true, errorMessage: null, isSuccess: false));
     final result = await _loginUseCase(loginData);
     if (result != null && result.success) {
-      emit(state.copyWith(isLoading: false, isSuccess: true));
+      emit(state.copyWith(
+        isLoading: false,
+        isSuccess: true,
+        errorMessage: null,
+      ));
     } else {
-      emit(state.copyWith(isLoading: false, errorMessage: result?.message ?? "Login failed"));
+      emit(state.copyWith(
+        isLoading: false,
+        isSuccess: false, // <-- Important!
+        errorMessage: result?.message ?? "Login failed",
+      ));
     }
+
   }
 }

@@ -41,18 +41,17 @@ class _LoginViewState extends State<LoginView> {
       backgroundColor: kWhite,
       body: BlocConsumer<LoginCubit, LoginState>(
         listener: (context, state) {
-          if (state.isSuccess) {
+          if (state.isSuccess && state.errorMessage == null) {
             ScaffoldMessenger.of(context).showSnackBar(
               const SnackBar(content: Text("Login Successful")),
             );
-            if(widget.userType=='2'){
-              print('##################${widget.userType}');
-              Navigator.of(context).push(MaterialPageRoute(builder:(context)=>
-                  AgencyTabView()));
-            }
-            else{
-              Navigator.of(context).push(MaterialPageRoute(builder:(context)=>
-                  AgencyDashboardScreen()));
+
+            if (widget.userType == '2') {
+              Navigator.of(context).push(MaterialPageRoute(
+                  builder: (context) => AgencyTabView()));
+            } else {
+              Navigator.of(context).push(MaterialPageRoute(
+                  builder: (context) => AgencyDashboardScreen()));
             }
           } else if (state.errorMessage != null) {
             ScaffoldMessenger.of(context).showSnackBar(
@@ -60,6 +59,7 @@ class _LoginViewState extends State<LoginView> {
             );
           }
         },
+
         builder: (context, state) {
           return Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),

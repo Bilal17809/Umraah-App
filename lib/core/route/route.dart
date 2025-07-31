@@ -19,7 +19,8 @@ class Routes {
         final userType=arguments as String;
         return MaterialPageRoute(builder: (_) =>  SignupView(userType:userType));
       case RoutesName.loginPage:
-        return MaterialPageRoute(builder: (_) => const LoginView());
+        final userType= settings.arguments as String;
+        return MaterialPageRoute(builder: (_) =>  LoginView(userType: userType,));
       case RoutesName.dashboardPage:
         return MaterialPageRoute(builder: (_) => const DashboardView());
       case RoutesName.profilePage:

@@ -16,6 +16,7 @@ import '/presentation/signup/view/signup_page.dart';
 import '/presentation/verify_otp/bloc/verify_otp_cubit.dart';
 import 'core/network/api_client.dart';
 import 'core/route/route.dart';
+import 'core/route/route_name.dart';
 import 'data/data_source/network_data_sr.dart';
 import 'data/repositories_impl/repositories_impl.dart';
 
@@ -54,7 +55,9 @@ class MyApp extends StatelessWidget {
     required this.registerUseCase,
     required this.otpUseCase,
     required this.loginUseCase,
-    required this.profileCase
+    required this.profileCase,
+    required this.createPackages,
+    required this.myPackages
 
   });
 

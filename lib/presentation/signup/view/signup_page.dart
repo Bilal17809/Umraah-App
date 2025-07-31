@@ -225,6 +225,7 @@ class SignupView extends StatelessWidget {
                             userImageBase64: "",
                             userType:userType,
                             agencyImageBase64: '',
+                            token: '', isVerified: false,
                           );
                           cubit.signUp(user);
                         }
