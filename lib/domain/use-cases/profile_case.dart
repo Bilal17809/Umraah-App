@@ -13,4 +13,8 @@ class ProfileUseCase {
   Future<ApiResult?> call2(){
     return repository.logout();
   }
+
+  Future<ApiResult?> call3(){
+    return repository.deleteAccount();
+  }
 }

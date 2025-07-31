@@ -1,4 +1,5 @@
 import 'package:bloc/bloc.dart';
+import '../../../core/local_data_storage/local_storage.dart';
 import '/domain/use-cases/profile_case.dart';
 import 'package:umraah_app/presentation/profile/bloc/profile_state.dart';
 
@@ -28,7 +29,7 @@ class ProfileCubit extends Cubit<ProfileState>{
 
   Future<void> logout() async {
     emit(state.copyWith(isLoading: true, isSuccess: false, errorMessage: null));
-    final result = await _profileUseCase();
+    final result = await _profileUseCase.call2();
     if (result != null && result.success) {
       emit(state.copyWith(
         isSuccess: true,
@@ -41,6 +42,29 @@ class ProfileCubit extends Cubit<ProfileState>{
         isLoading: false,
         isSuccess: false,
         errorMessage: result?.message ?? "Logout failed",
+      ));
+    }
+  }
+
+  Future<void> delete() async {
+    emit(state.copyWith(isLoading: true, isSuccess: false, errorMessage: null));
+
+    // ✅ Use call3() to invoke deleteAccount
+    final result = await _profileUseCase.call3();
+
+    if (result != null && result.success) {
+      await SecureStorage.clearAll();
+      emit(state.copyWith(
+        isSuccess: true,
+        isLoading: false,
+        errorMessage: null,
+        profileData: null,
+      ));
+    } else {
+      emit(state.copyWith(
+        isLoading: false,
+        isSuccess: false,
+        errorMessage: result?.message ?? "Delete failed",
       ));
     }
   }

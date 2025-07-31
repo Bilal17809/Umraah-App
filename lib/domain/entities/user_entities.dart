@@ -1,3 +1,4 @@
+
 // class UserEntity {
 //   final String firstName;
 //   final String lastName;
@@ -9,8 +10,9 @@
 //   final String agencyLicenceNumber;
 //   final String userImageBase64;
 //   final String userType;
+//   final String agencyImageBase64;
 //
-//   UserEntity({
+//   const UserEntity({
 //     required this.firstName,
 //     required this.lastName,
 //     required this.email,
@@ -20,7 +22,8 @@
 //     required this.agencyAddress,
 //     required this.agencyLicenceNumber,
 //     required this.userImageBase64,
-//     required this.userType
+//     required this.userType,
+//     required this.agencyImageBase64,
 //   });
 // }
 class UserEntity {
@@ -35,6 +38,8 @@ class UserEntity {
   final String userImageBase64;
   final String userType;
   final String agencyImageBase64;
+  final String token;
+  final bool isVerified;
 
   const UserEntity({
     required this.firstName,
@@ -48,6 +53,8 @@ class UserEntity {
     required this.userImageBase64,
     required this.userType,
     required this.agencyImageBase64,
+    required this.token,
+    required this.isVerified,
   });
 }
 

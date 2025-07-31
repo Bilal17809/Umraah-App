@@ -7,4 +7,6 @@ abstract class UserRepository {
   Future<ApiResult<dynamic>> login(LoginEntity login);
   Future<ApiResult<dynamic>> profile();
   Future<ApiResult<dynamic>> logout();
+  Future<ApiResult<dynamic>> deleteAccount();
+
 }

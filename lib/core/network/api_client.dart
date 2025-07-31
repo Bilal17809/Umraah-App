@@ -74,4 +74,31 @@ class ApiClient {
       return ApiResult(success: false, message: 'Error: ${e.toString()}');
     }
   }
+
+  Future<ApiResult> delete(String endpoint, {String? token}) async {
+    try {
+      final url = Uri.parse('$baseUrl$endpoint');
+      final response = await http.delete(
+        url,
+        headers: {
+          'Content-Type': 'application/json',
+          if (token != null) 'Authorization': 'Bearer $token',
+        },
+      );
+      print('########### 🔁 DELETE Response body: ${response.body}');
+      // Check if response has a body
+      final bool hasBody = response.body.isNotEmpty;
+
+      final json = hasBody ? jsonDecode(response.body) : {};
+
+      return ApiResult(
+        success: response.statusCode == 200 || response.statusCode == 204,
+        message: json['message'] ?? 'Account deleted successfully.',
+        data: json['data'],
+      );
+    } catch (e) {
+      return ApiResult(success: false, message: 'Error: ${e.toString()}');
+    }
+  }
+
 }

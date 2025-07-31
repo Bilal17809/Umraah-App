@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:umraah_app/presentation/home/view/sign_up_view/view/sign_up_view.dart';
 
+import '../../../core/route/route_name.dart';
 import '../../signup/view/signup_page.dart';
 
 class UserType extends StatelessWidget {
@@ -27,8 +28,7 @@ class UserType extends StatelessWidget {
               width: double.infinity,
               child: ElevatedButton(
                 onPressed: () {
-                  Navigator.of(context).push(MaterialPageRoute(builder:(context)=>
-                      SignupView(userType: 'Agency',)));
+                  Navigator.pushNamed(context, RoutesName.signUpPage,arguments:'Agency');
                 },
                 style: ElevatedButton.styleFrom(
                   padding: const EdgeInsets.symmetric(vertical: 16),
@@ -41,8 +41,7 @@ class UserType extends StatelessWidget {
               width: double.infinity,
               child: ElevatedButton(
                 onPressed: () {
-                  Navigator.of(context).push(MaterialPageRoute(builder:(context)=>
-                      SignupView(userType: 'User',)));
+                  Navigator.pushNamed(context, RoutesName.signUpPage,arguments: 'User');
                 },
                 style: ElevatedButton.styleFrom(
                   padding: const EdgeInsets.symmetric(vertical: 16),

@@ -38,6 +38,22 @@ class _ProfileScreenState extends State<ProfileScreen> {
               },
             ),
           ),
+
+          BlocListener<ProfileCubit, ProfileState>(
+            listener: (context, state) {
+              if (state.isSuccess) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(content: Text("Delete Account")),
+                );
+              }
+            },
+            child: IconButton(
+              icon: Icon(Icons.delete),
+              onPressed: () {
+                context.read<ProfileCubit>().delete();
+              },
+            ),
+          ),
         ],
 
 

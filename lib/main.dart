@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:umraah_app/presentation/user_type/view/user_type.dart';
+import 'package:umraah_app/core/route/route_name.dart';
 import '/domain/use-cases/login_case.dart';
 import '/domain/use-cases/otp_case.dart';
 import '/domain/use-cases/profile_case.dart';
@@ -8,9 +8,9 @@ import '/domain/use-cases/signup_case.dart';
 import '/presentation/login/bloc/login_cubit.dart';
 import '/presentation/profile/bloc/profile_cubit.dart';
 import '/presentation/signup/bloc/signup_cubit.dart';
-import '/presentation/signup/view/signup_page.dart';
 import '/presentation/verify_otp/bloc/verify_otp_cubit.dart';
 import 'core/network/api_client.dart';
+import 'core/route/route.dart';
 import 'data/data_source/network_data_sr.dart';
 import 'data/repositories_impl/repositories_impl.dart';
 
@@ -66,8 +66,8 @@ class MyApp extends StatelessWidget {
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
-        title: 'Umrah App',
-        home: UserType(),
+        initialRoute: RoutesName.userTypePage,
+        onGenerateRoute: Routes.generateRoute,
       ),
     );
   }

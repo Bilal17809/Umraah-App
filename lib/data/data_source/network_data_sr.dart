@@ -34,4 +34,9 @@ class AuthRemoteDataSource {
   Future<ApiResult> logout(String token){
     return _client.get(ApiRoutes.logout,token: token);
   }
+
+  // logout
+  Future<ApiResult> deleteAccount(String token){
+    return _client.delete(ApiRoutes.delete,token: token);
+  }
 }
