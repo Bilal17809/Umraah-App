@@ -69,7 +69,15 @@ body: Padding(
              
                   Center(child: Text("Already have an account?",style: TextStyle(fontSize: 26),)),
                    SizedBox(height: 12),
-                   Center(child: Text("Log in",style: TextStyle(color: Colors.green,fontSize: 24),))
+            Center(
+              child: GestureDetector(
+                onTap: () {},
+                child: Text(
+                  "Log in",
+                  style: TextStyle(color: Colors.green, fontSize: 24),
+                ),
+              ),
+            )
                 
                 
     ],

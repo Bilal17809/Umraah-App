@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:umraah_app/presentation/login/view/login_view.dart';
+import 'package:umraah_app/presentation/profile/view/profile_view.dart';
 import 'package:umraah_app/presentation/signup/bloc/signup_cubit.dart';
 import 'package:umraah_app/presentation/signup/bloc/signup_state.dart';
-import '../../../core/route/route_name.dart';
-import '../widgets/signup_form.dart';
+import '../../verify_otp/view/verify_otp_view.dart';
 import '/domain/entities/user_entities.dart';
 
 // class SignupView extends StatelessWidget {
@@ -145,14 +145,18 @@ import '/domain/entities/user_entities.dart';
 //   }
 // }
 
-import '/core/theme/app_colors.dart';
-import '/core/theme/app_theme.dart';
+import 'package:umraah_app/core/common/custom_text_form_field.dart';
+import 'package:umraah_app/core/theme/app_colors.dart';
+import 'package:umraah_app/core/theme/app_styles.dart';
+import 'package:umraah_app/core/theme/app_theme.dart';
 
 class SignupView extends StatelessWidget {
   final String userType;
+
   SignupView({super.key, required this.userType});
 
   final _formKey = GlobalKey<FormState>();
+
   final firstName = TextEditingController();
   final lastName = TextEditingController();
   final email = TextEditingController();
@@ -165,7 +169,7 @@ class SignupView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final cubit = context.read<SignupCubit>();
-    final isUser = userType.toUpperCase() == "USER";
+    final isUser = userType == "1";
 
     return Scaffold(
       backgroundColor: kWhite,
@@ -177,29 +181,21 @@ class SignupView extends StatelessWidget {
         child: SingleChildScrollView(
           child: BlocConsumer<SignupCubit, SignupState>(
             listener: (context, state) {
-              if (state.isSuccess) {
-                Navigator.pushNamed(context, RoutesName.otpPage,arguments: email.text);
-              } else if (state.errorMessage != null) {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(content: Text(state.errorMessage!)),
-                );
-              }
             },
-
             builder: (context, state) {
               return Form(
                 key: _formKey,
                 child: Column(
                   children: [
-                    BuildFormField(controller: firstName, label: "First Name"),
-                    BuildFormField(controller: lastName, label: 'Last Name'),
-                    BuildFormField(controller: email,label:  'Email'),
-                    BuildFormField(controller: password, label: 'Password', obscureText: true),
-                    BuildFormField(controller: phoneNumber, label: 'Phone Number'),
+                    buildField(firstName, "First Name"),
+                    buildField(lastName, 'Last Name'),
+                    buildField(email, 'Email'),
+                    buildField(password, 'Password', obscureText: true),
                     if (!isUser) ...[
-                      BuildFormField(controller: agencyName,label:'Agency Name'),
-                      BuildFormField(controller: agencyAddress, label:'Agency Address'),
-                      BuildFormField(controller: agencyLicenceNumber, label: 'Licence Number'),
+                      buildField(phoneNumber, 'Phone Number'),
+                      buildField(agencyName, 'Agency Name'),
+                      buildField(agencyAddress, 'Agency Address'),
+                      buildField(agencyLicenceNumber, 'Licence Number'),
                     ],
                     const SizedBox(height: 20),
                     ElevatedButton(
@@ -221,7 +217,7 @@ class SignupView extends StatelessWidget {
                             lastName: lastName.text,
                             email: email.text,
                             password: password.text,
-                            phoneNumber:phoneNumber.text,
+                            phoneNumber: isUser ? '' : phoneNumber.text,
                             agencyName: isUser ? '' : agencyName.text,
                             agencyAddress: isUser ? '' : agencyAddress.text,
                             agencyLicenceNumber:
@@ -229,7 +225,6 @@ class SignupView extends StatelessWidget {
                             userImageBase64: "",
                             userType:userType,
                             agencyImageBase64: '',
-                            token: '', isVerified: false,
                           );
                           cubit.signUp(user);
                         }
@@ -240,21 +235,11 @@ class SignupView extends StatelessWidget {
                     ),
                     TextButton(
                       onPressed: () {
-                       Navigator.pushNamed(context, RoutesName.loginPage);
+                        Navigator.of(context).push(
+                          MaterialPageRoute(builder: (_) => LoginView(userType:userType,)),
+                        );
                       },
                       child: const Text("Already registered? Login"),
-                    ),
-                    TextButton(
-                      onPressed: () {
-                        Navigator.pushNamed(context, RoutesName.profilePage);
-                      },
-                      child: const Text("profile"),
-                    ),
-                    TextButton(
-                      onPressed: () {
-                        Navigator.pushNamed(context, RoutesName.otpPage,arguments:email.text);
-                      },
-                      child: const Text("otp"),
                     ),
                   ],
                 ),
@@ -262,6 +247,50 @@ class SignupView extends StatelessWidget {
             },
           ),
         ),
+      ),
+    );
+  }
+
+  Widget buildField(
+      TextEditingController controller,
+      String label, {
+        bool obscureText = false,
+      }) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 10),
+      child: FormField<String>(
+        validator: (val) => val == null || val.isEmpty ? 'Please enter $label' : null,
+        builder: (field) {
+          final hasError = field.hasError;
+
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                decoration: roundedDecoration.copyWith(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(35),
+                  border: Border.all(color: hasError ? Colors.red : Colors.transparent, width: 1.5),
+                ),
+                child: CustomTextFormField(
+                  hintText: label,
+                  controller: controller,
+                  obscureText: obscureText,
+                  onChanged: field.didChange,
+                ),
+              ),
+              if (hasError)
+                Padding(
+                  padding: const EdgeInsets.only(left: 16, top: 6),
+                  child: Text(
+                    field.errorText ?? '',
+                    style: const TextStyle(color: Colors.red, fontSize: 12),
+                  ),
+                ),
+            ],
+          );
+        },
       ),
     );
   }

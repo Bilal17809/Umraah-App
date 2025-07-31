@@ -1,3 +1,5 @@
+import 'package:umraah_app/data/model/create_package.dart';
+
 import '../../core/config/api_routes.dart';
 import '../../core/network/api_client.dart';
 import '../../core/network/api_response.dart';
@@ -39,4 +41,22 @@ class AuthRemoteDataSource {
   Future<ApiResult> deleteAccount(String token){
     return _client.delete(ApiRoutes.delete,token: token);
   }
+
+  // create packages
+  Future<ApiResult> createPackage(CreatePackageModel createPackageModel,String token){
+    return _client.post(ApiRoutes.createPackage,createPackageModel.toJson(),token: token);
+  }
+
+  // get myPackages
+  Future<ApiResult> myPackages(String token, {int status = 2}) {
+    return _client.getMyPackage(
+      ApiRoutes.myPackages,
+      token: token,
+      queryParams: {'status': status.toString()},
+    );
+  }
+
+  // Future<ApiResult> myPackages(String token){
+  //   return _client.get(ApiRoutes.myPackages,token: token);
+  // }
 }

@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:umraah_app/core/theme/app_colors.dart';
 import 'package:umraah_app/presentation/home/view/dashboard_view/view/dashboard_view.dart';
+import 'package:umraah_app/presentation/home/view/profile_view/view/profile_view.dart';
 
 
 class AgencyDashboardScreen extends StatefulWidget {
@@ -19,7 +20,7 @@ class _AgencyDashboardScreenState extends State<AgencyDashboardScreen> {
     const DashboardView(),
     const Center(child: Text("Package view"),),
    const Center(child: Text("Booking View"),),
-  const Center(child: Text("Profile View"),),
+    ProfileView2(),
   ];
 
   @override
@@ -28,7 +29,8 @@ class _AgencyDashboardScreenState extends State<AgencyDashboardScreen> {
       backgroundColor: kWhite,
       appBar: AppBar(
         backgroundColor: kWhite,
-        title: Center(child: const Text('Agency App')),
+        centerTitle: true,
+        title: const Text('Agency App'),
         bottom: PreferredSize(
           preferredSize: const Size.fromHeight(48),
           child: TabBarSection(
