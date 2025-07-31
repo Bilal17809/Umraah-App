@@ -28,7 +28,7 @@ class UserType extends StatelessWidget {
               child: ElevatedButton(
                 onPressed: () {
                   Navigator.of(context).push(MaterialPageRoute(builder:(context)=>
-                      SignupView(userType: 'Agency',)));
+                      SignupView(userType: '2',)));
                 },
                 style: ElevatedButton.styleFrom(
                   padding: const EdgeInsets.symmetric(vertical: 16),
@@ -42,7 +42,7 @@ class UserType extends StatelessWidget {
               child: ElevatedButton(
                 onPressed: () {
                   Navigator.of(context).push(MaterialPageRoute(builder:(context)=>
-                      SignupView(userType: 'User',)));
+                      SignupView(userType: '1',)));
                 },
                 style: ElevatedButton.styleFrom(
                   padding: const EdgeInsets.symmetric(vertical: 16),

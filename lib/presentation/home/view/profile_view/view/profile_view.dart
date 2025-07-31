@@ -6,14 +6,14 @@ import 'package:umraah_app/core/theme/app_styles.dart';
 import 'package:umraah_app/core/theme/app_theme.dart';
 import 'package:image_picker/image_picker.dart';
 
-class ProfileView extends StatefulWidget {
- ProfileView({super.key});
+class ProfileView2 extends StatefulWidget {
+ ProfileView2({super.key});
 
   @override
-  State<ProfileView> createState() => _ProfileViewState();
+  State<ProfileView2> createState() => _ProfileView2State();
 }
 
-class _ProfileViewState extends State<ProfileView> {
+class _ProfileView2State extends State<ProfileView2> {
 
 File? _profileImage;
 

@@ -5,4 +5,6 @@ class ApiRoutes {
   static const String login = '/login';
   static const String logout = '/logout';
   static const String delete = '/deleteAccount';
+  static const String createPackage= '/createPackage';
+  static const String myPackages= '/myPackages?status=2';
 }

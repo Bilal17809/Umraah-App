@@ -20,7 +20,7 @@ class _AgencyDashboardScreenState extends State<AgencyDashboardScreen> {
     const DashboardView(),
     const Center(child: Text("Package view"),),
    const Center(child: Text("Booking View"),),
-    ProfileView(),
+    ProfileView2(),
   ];
 
   @override

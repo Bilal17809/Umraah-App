@@ -169,7 +169,7 @@ class SignupView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final cubit = context.read<SignupCubit>();
-    final isUser = userType.toUpperCase() == "USER";
+    final isUser = userType == "1";
 
     return Scaffold(
       backgroundColor: kWhite,
@@ -236,7 +236,7 @@ class SignupView extends StatelessWidget {
                     TextButton(
                       onPressed: () {
                         Navigator.of(context).push(
-                          MaterialPageRoute(builder: (_) => const LoginView()),
+                          MaterialPageRoute(builder: (_) => LoginView(userType:userType,)),
                         );
                       },
                       child: const Text("Already registered? Login"),

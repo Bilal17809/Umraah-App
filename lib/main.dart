@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:umraah_app/domain/use-cases/create_packages.dart';
+import 'package:umraah_app/domain/use-cases/my_packages.dart';
+import 'package:umraah_app/presentation/create_packages/bloc/create_package_cubit.dart';
+import 'package:umraah_app/presentation/my_packages/bloc/my_package_cubit.dart';
 import 'package:umraah_app/presentation/user_type/view/user_type.dart';
 import '/domain/use-cases/login_case.dart';
 import '/domain/use-cases/otp_case.dart';
@@ -19,16 +23,21 @@ void main() {
   final apiClient = ApiClient();
   final remoteDataSource = AuthRemoteDataSource(apiClient);
   final userRepository = UserRepositoryImpl(remoteDataSource);
+
   final registerUseCase = SignupUseCase(userRepository);
   final otpUseCase = OtpVerifyUseCase(userRepository);
   final loginUseCase= LoginUseCase(userRepository);
   final profileCase= ProfileUseCase(userRepository);
+  final createPackages = CreatePackages(userRepository);
+  final myPackage = MyPackages(userRepository);
 
   runApp(MyApp(
     registerUseCase: registerUseCase,
     otpUseCase: otpUseCase,
     loginUseCase: loginUseCase,
       profileCase: profileCase,
+    createPackages: createPackages,
+    myPackages: myPackage,
   ));
 }
 
@@ -37,13 +46,17 @@ class MyApp extends StatelessWidget {
   final OtpVerifyUseCase otpUseCase;
   final LoginUseCase loginUseCase;
   final ProfileUseCase profileCase;
+  final CreatePackages createPackages;
+  final MyPackages  myPackages;
 
   const MyApp({
     super.key,
     required this.registerUseCase,
     required this.otpUseCase,
     required this.loginUseCase,
-    required this.profileCase
+    required this.profileCase,
+    required this.createPackages,
+    required this.myPackages
 
   });
 
@@ -62,6 +75,12 @@ class MyApp extends StatelessWidget {
         ),
         BlocProvider(
           create: (_) => ProfileCubit(profileCase),
+        ),
+        BlocProvider(
+          create: (_) => CreatePackageCubit(createPackages),
+        ),
+        BlocProvider(
+          create: (_) => MyPackageCubit(myPackages),
         ),
       ],
       child: MaterialApp(
