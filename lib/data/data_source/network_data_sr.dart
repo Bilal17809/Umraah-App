@@ -56,6 +56,10 @@ class AuthRemoteDataSource {
     );
   }
 
+  // Verify OTP
+  Future<ApiResult> resendOtp(OtpVerifyModel otpModel) {
+    return _client.post(ApiRoutes.resendOtp, otpModel.toJson());
+  }
   // Future<ApiResult> myPackages(String token){
   //   return _client.get(ApiRoutes.myPackages,token: token);
   // }

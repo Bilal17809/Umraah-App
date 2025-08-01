@@ -1,14 +1,8 @@
-import 'dart:io';
-
-import 'package:http/http.dart' as _client;
 import 'package:umraah_app/data/model/create_package.dart';
 import 'package:umraah_app/data/model/login_model.dart';
 import 'package:umraah_app/data/model/registration_model.dart';
 import 'package:umraah_app/data/model/verifyopt_model.dart';
 import 'package:umraah_app/domain/entities/create_package_entity.dart';
-import 'package:umraah_app/presentation/create_packages/view/create_packages_view.dart';
-import '../../core/config/api_routes.dart';
-import '../../core/network/api_client.dart';
 import '/core/local_data_storage/local_storage.dart';
 import '/core/network/api_response.dart';
 import '/domain/entities/user_entities.dart';
@@ -23,17 +17,38 @@ class UserRepositoryImpl implements UserRepository {
   Future<ApiResult> register(UserEntity user) async {
     final model = UserModel.fromEntity(user);
     final result = await remoteDataSource.registerUser(model);
+
     if (result.success && result.data != null) {
       final response = UserModel.fromJson(result.data);
       await _saveUserData(response, isRegister: true);
+      return ApiResult(success: true, message: "Registration successful", data: response);
     }
-    return result;
+    return ApiResult(success: false, message: result.message ?? "Registration failed");
   }
+
+  // @override
+  // Future<ApiResult> register(UserEntity user) async {
+  //   final model = UserModel.fromEntity(user);
+  //   final result = await remoteDataSource.registerUser(model);
+  //   if (result.success && result.data != null) {
+  //     final response = UserModel.fromJson(result.data);
+  //     await _saveUserData(response, isRegister: true);
+  //   }
+  //   return result;
+  // }
 
   @override
   Future<ApiResult> otpVerify(OtpEntity user) async {
     final otpModel = OtpVerifyModel.fromEntity(user);
-    return await remoteDataSource.verifyOtp(otpModel);
+    final result= await remoteDataSource.verifyOtp(otpModel);
+    return ApiResult(success: true, message: "Otp send",data: result);;
+  }
+
+  @override
+  Future<ApiResult> resendOtp(OtpEntity user) async {
+    final otpModel = OtpVerifyModel.fromEntity(user);
+    final result= await remoteDataSource.verifyOtp(otpModel);
+    return ApiResult(success: true, message: "Otp Resend",data: result);
   }
 
   @override
@@ -44,7 +59,6 @@ class UserRepositoryImpl implements UserRepository {
       final token = result.data;
       await SecureStorage.saveToken(token);
       SecureStorage.setLoggedInStatus(true);
-
       return ApiResult(success: true, message: "Login successful", data: token);
     } else {
       return ApiResult(success: false, message: result.message ?? "Invalid credentials");

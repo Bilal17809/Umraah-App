@@ -10,4 +10,8 @@ class OtpVerifyUseCase {
   Future<ApiResult?> call(OtpEntity user) {
     return repository.otpVerify(user);
   }
+
+  Future<ApiResult?> resendCall(OtpEntity user) {
+    return repository.resendOtp(user);
+  }
 }

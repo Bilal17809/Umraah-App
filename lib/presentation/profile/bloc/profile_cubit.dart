@@ -48,10 +48,7 @@ class ProfileCubit extends Cubit<ProfileState>{
 
   Future<void> delete() async {
     emit(state.copyWith(isLoading: true, isSuccess: false, errorMessage: null));
-
-    // ✅ Use call3() to invoke deleteAccount
     final result = await _profileUseCase.call3();
-
     if (result != null && result.success) {
       await SecureStorage.clearAll();
       emit(state.copyWith(

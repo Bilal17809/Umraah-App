@@ -2,14 +2,19 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:umraah_app/presentation/home/view/tab_bar_view/view/tab_bar_view.dart';
+import '/core/route/route_name.dart';
 import '../bloc/verify_otp_cubit.dart';
 import '../bloc/verify_otp_state.dart';
 import '/domain/entities/user_entities.dart';
 
 class OtpVerifyScreen extends StatefulWidget {
   final String email;
+  final String useType;
 
-  const OtpVerifyScreen({Key? key, required this.email}) : super(key: key);
+  const OtpVerifyScreen({super.key,
+    required this.email,
+    required this.useType
+  });
 
   @override
   State<OtpVerifyScreen> createState() => _OtpVerifyScreenState();
@@ -70,8 +75,29 @@ class _OtpVerifyScreenState extends State<OtpVerifyScreen> {
       appBar: AppBar(title: const Text('OTP Verification')),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
-        child: BlocBuilder<OtpVerifyCubit, OtpVerifyState>(
-          builder: (context, state) {
+        child: BlocConsumer<OtpVerifyCubit, OtpVerifyState>(
+            listener: (context, state) {
+              if (state.isOtpVerified) {
+                Navigator.pushNamed(
+                  context,
+                  RoutesName.loginPage,
+                  arguments: widget.useType,
+                );
+              }
+
+              if (state.isOtpResent) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(content: Text('OTP resent successfully')),
+                );
+              }
+
+              if (state.errorMessage != null) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(content: Text(state.errorMessage!)),
+                );
+              }
+            },
+            builder: (context, state) {
             return Form(
               key: _formKey,
               child: Column(
@@ -122,10 +148,8 @@ class _OtpVerifyScreenState extends State<OtpVerifyScreen> {
                     onTap: _resendCooldown > 0
                         ? null
                         : () {
-                      // TODO: Add your resend OTP logic here
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(content: Text('OTP resent successfully')),
-                      );
+                      final user = OtpEntity(email: widget.email, otp: '');
+                      context.read<OtpVerifyCubit>().resendOtp(user);
                       startResendCooldown();
                     },
                     child: Text(
@@ -143,14 +167,13 @@ class _OtpVerifyScreenState extends State<OtpVerifyScreen> {
                   const SizedBox(height: 24),
                   state.isLoading
                       ? const Center(child: CircularProgressIndicator())
-                      : ElevatedButton(
-                    onPressed: () {
-                      final user = OtpEntity(
-                        email: widget.email,
-                        otp: otpCode,
-                      );
+                      :ElevatedButton(
+                    onPressed: otpCode.length == 6 && !state.isLoading
+                        ? () {
+                      final user = OtpEntity(email: widget.email, otp: otpCode);
                       context.read<OtpVerifyCubit>().verifyOtp(user);
-                    },
+                    }
+                        : null,
                     child: const Text('Verify OTP'),
                   ),
                   const SizedBox(height: 8),
@@ -173,7 +196,7 @@ class _OtpVerifyScreenState extends State<OtpVerifyScreen> {
                         style: const TextStyle(color: Colors.red),
                       ),
                     ),
-                  if (state.isSuccess)
+                  if (state.isOtpVerified)
                     const Padding(
                       padding: EdgeInsets.only(top: 16.0),
                       child: Text(

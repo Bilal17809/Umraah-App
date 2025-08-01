@@ -27,7 +27,8 @@ class Routes {
         return MaterialPageRoute(builder: (_) => const ProfileScreen());
       case RoutesName.otpPage:
         final email= settings.arguments as String;
-        return MaterialPageRoute(builder:(_)=> OtpVerifyScreen(email: email,));
+        final useType= settings.arguments as String;
+        return MaterialPageRoute(builder:(_)=> OtpVerifyScreen(email: email, useType:useType,));
       default:
         return MaterialPageRoute(
           builder: (_) {

@@ -9,12 +9,49 @@ class OtpVerifyCubit extends Cubit<OtpVerifyState> {
   OtpVerifyCubit(this._otpVerifyUseCase) : super(const OtpVerifyState());
 
   Future<void> verifyOtp(OtpEntity user) async {
-    emit(state.copyWith(isLoading: true, errorMessage: null, isSuccess: false));
-    final result = await _otpVerifyUseCase(user);
-    if (result != null && result.success) {
-      emit(state.copyWith(isLoading: false, isSuccess: true));
+    emit(state.copyWith(
+      isLoading: true,
+      errorMessage: null,
+      isOtpVerified: false,
+      isOtpResent: false,
+    ));
+
+    final result = await _otpVerifyUseCase.call(user);
+
+    if (result!.success) {
+      emit(state.copyWith(
+        isLoading: false,
+        isOtpVerified: true,
+      ));
     } else {
-      emit(state.copyWith(isLoading: false, errorMessage: result?.message ?? "Unknown error"));
+      emit(state.copyWith(
+        isLoading: false,
+        errorMessage: result.message ?? 'OTP verification failed',
+      ));
     }
   }
+
+  Future<void> resendOtp(OtpEntity user) async {
+    emit(state.copyWith(
+      isLoading: true,
+      errorMessage: null,
+      isOtpVerified: false,
+      isOtpResent: false,
+    ));
+
+    final result = await _otpVerifyUseCase.resendCall(user);
+
+    if (result!.success) {
+      emit(state.copyWith(
+        isLoading: false,
+        isOtpResent: true,
+      ));
+    } else {
+      emit(state.copyWith(
+        isLoading: false,
+        errorMessage: result.message ?? 'OTP resend failed',
+      ));
+    }
+  }
+
 }
