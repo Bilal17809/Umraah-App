@@ -1,21 +1,26 @@
 import '/core/common/cubit_state.dart';
 
-class OtpVerifyState extends BaseState {
-  const OtpVerifyState({
+class UpdateProfileState extends BaseState {
+  final Map<String, dynamic>? profileData;
+
+  UpdateProfileState({
     super.isLoading,
     super.errorMessage,
     super.isSuccess,
+    this.profileData,
   });
 
-  OtpVerifyState copyWith({
+  UpdateProfileState copyWith({
     bool? isLoading,
     String? errorMessage,
     bool? isSuccess,
+    Map<String, dynamic>? profileData,
   }) {
-    return OtpVerifyState(
+    return UpdateProfileState(
       isLoading: isLoading ?? this.isLoading,
       errorMessage: errorMessage ?? this.errorMessage,
       isSuccess: isSuccess ?? this.isSuccess,
+      profileData: profileData ?? this.profileData,
     );
   }
 }

@@ -20,7 +20,7 @@ class LoginCubit extends Cubit<LoginState> {
     } else {
       emit(state.copyWith(
         isLoading: false,
-        isSuccess: false, // <-- Important!
+        isSuccess: false,
         errorMessage: result?.message ?? "Login failed",
       ));
     }

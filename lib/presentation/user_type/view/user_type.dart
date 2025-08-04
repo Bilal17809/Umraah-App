@@ -28,7 +28,7 @@ class UserType extends StatelessWidget {
               width: double.infinity,
               child: ElevatedButton(
                 onPressed: () {
-                  Navigator.pushNamed(context, RoutesName.signUpPage,arguments:'2');
+                  Navigator.pushNamed(context, RoutesName.loginPage,arguments:'2');
                 },
                 style: ElevatedButton.styleFrom(
                   padding: const EdgeInsets.symmetric(vertical: 16),
@@ -41,7 +41,7 @@ class UserType extends StatelessWidget {
               width: double.infinity,
               child: ElevatedButton(
                 onPressed: () {
-                  Navigator.pushNamed(context, RoutesName.signUpPage,arguments: '1');
+                  Navigator.pushNamed(context, RoutesName.loginPage,arguments: '1');
                 },
                 style: ElevatedButton.styleFrom(
                   padding: const EdgeInsets.symmetric(vertical: 16),

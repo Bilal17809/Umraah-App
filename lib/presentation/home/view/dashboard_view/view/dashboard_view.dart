@@ -4,8 +4,8 @@ import 'package:umraah_app/presentation/home/view/package_view/view/package_view
 import 'package:umraah_app/presentation/home/view/sign_up_view/view/sign_up_view.dart';
 import 'package:umraah_app/presentation/home/view/umraah_packages_view/view/umraah_packages_view.dart';
 
-class DashboardView extends StatelessWidget {
-  const DashboardView({super.key});
+class UserDashboardView extends StatelessWidget {
+  const UserDashboardView({super.key});
 
   @override
   Widget build(BuildContext context) {

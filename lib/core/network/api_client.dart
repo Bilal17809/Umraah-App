@@ -11,28 +11,6 @@ class ApiClient {
 
   ApiClient() : baseUrl = EnvironmentConfig.baseUrl;
 
-  // Future<ApiResult> post(String endpoint, Map<String, dynamic> body, {String? token}) async {
-  //   try {
-  //     final url = Uri.parse('$baseUrl$endpoint');
-  //     final response = await http.post(
-  //       url,
-  //       headers: {
-  //         'Content-Type': 'application/json',
-  //         if (token != null) 'Authorization': 'Bearer $token',
-  //       },
-  //       body: jsonEncode(body),
-  //     );
-  //     print('################### 🔁 Response body: ${response.body}');
-  //     final json = jsonDecode(response.body);
-  //     return ApiResult(
-  //       success:response.statusCode == 200 || response.statusCode == 201,
-  //       message: json['message'] ?? 'No message',
-  //       data: json['token'],
-  //     );
-  //   } catch (e) {
-  //     return ApiResult(success: false, message: 'Error: ${e.toString()}');
-  //   }
-  // }
   Future<ApiResult> post(String endpoint, Map<String, dynamic> body, {String? token}) async {
     try {
       final url = Uri.parse('$baseUrl$endpoint');
@@ -67,6 +45,7 @@ class ApiClient {
           if (token != null) 'Authorization': 'Bearer $token',
         },
       );
+      print('################### 🔁 Response body: ${response.body}');
       final json = jsonDecode(response.body);
       return ApiResult(
         success: response.statusCode == 200 || response.statusCode == 201,
@@ -130,7 +109,7 @@ class ApiClient {
       return ApiResult(
         success: response.statusCode == 200 || response.statusCode == 201,
         message: json['message'] ?? 'No message',
-        data: json['packages'], // or json['data'] based on API
+        data: json['packages'],
       );
     } catch (e) {
       return ApiResult(success: false, message: 'Error: ${e.toString()}');

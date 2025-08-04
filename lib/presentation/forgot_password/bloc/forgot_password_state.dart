@@ -1,21 +1,26 @@
 import '/core/common/cubit_state.dart';
 
-class OtpVerifyState extends BaseState {
-  const OtpVerifyState({
+class ForgotPasswordState extends BaseState {
+  final bool emailSent;
+
+  ForgotPasswordState({
     super.isLoading,
     super.errorMessage,
     super.isSuccess,
+    this.emailSent = false,
   });
 
-  OtpVerifyState copyWith({
+  ForgotPasswordState copyWith({
     bool? isLoading,
     String? errorMessage,
     bool? isSuccess,
+    bool? emailSent,
   }) {
-    return OtpVerifyState(
+    return ForgotPasswordState(
       isLoading: isLoading ?? this.isLoading,
       errorMessage: errorMessage ?? this.errorMessage,
       isSuccess: isSuccess ?? this.isSuccess,
+      emailSent: emailSent ?? this.emailSent,
     );
   }
 }

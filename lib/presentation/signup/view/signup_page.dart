@@ -40,30 +40,25 @@ class SignupView extends StatelessWidget {
         padding: const EdgeInsets.all(16),
         child: SingleChildScrollView(
           child: BlocConsumer<SignupCubit, SignupState>(
-            listener: (context, state) {
-              if (state.isSuccess && state.errorMessage != null) {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(content: Text("SignUp Successfully")),
-                );
-                Navigator.of(context).push(
-                    MaterialPageRoute(builder:(context)=>OtpVerifyScreen(email:email.text,
-                      useType:userType,)));
-                // Navigator.pushNamed(
-                //   context,
-                //   RoutesName.otpPage,
-                //   arguments: {
-                //     'userType': userType,
-                //     'email': email.text,
-                //   },
-                // );
-              } else if (state.errorMessage != null) {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(content: Text(state.errorMessage!)),
-                );
-              }
-            },
+              listener: (context, state) {
+                if (state.isSuccess) {
+                  Navigator.pushNamed(
+                    context,
+                    RoutesName.otpPage,
+                    arguments: {
+                      'email': email.text,
+                      'useType': userType,
+                    },
+                  );
+                } else if (state.errorMessage != null) {
+                  print("######### ❌ Signup failed: ${state.errorMessage}");
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(content: Text(state.errorMessage!)),
+                  );
+                }
+              },
 
-            builder: (context, state) {
+              builder: (context, state) {
               return Form(
                 key: _formKey,
                 child: Column(
@@ -117,8 +112,22 @@ class SignupView extends StatelessWidget {
                     ),
                     TextButton(
                       onPressed: () {
-                        Navigator.of(context).push(
-                          MaterialPageRoute(builder: (_) => LoginView(userType:userType,)),
+                        Navigator.pushNamed(context,
+                            RoutesName.loginPage,
+                          arguments: userType
+                        );
+                      },
+                      child: const Text("Already registered? Login"),
+                    ),
+
+                    TextButton(
+                      onPressed: () {
+                        Navigator.pushNamed(context,
+                            RoutesName.otpPage,
+                          arguments: {
+                            'email': 'bilalkhwar2@gmail.com',
+                            'useType': userType,
+                          },
                         );
                       },
                       child: const Text("Already registered? Login"),

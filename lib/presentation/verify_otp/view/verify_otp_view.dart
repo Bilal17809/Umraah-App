@@ -1,7 +1,8 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:umraah_app/presentation/home/view/tab_bar_view/view/tab_bar_view.dart';
+import '/domain/entities/resend_otp_entity.dart';
+import '../../agency_dashboard/view/agency_dashboard_view.dart';
 import '/core/route/route_name.dart';
 import '../bloc/verify_otp_cubit.dart';
 import '../bloc/verify_otp_state.dart';
@@ -68,6 +69,9 @@ class _OtpVerifyScreenState extends State<OtpVerifyScreen> {
     _resendTimer?.cancel();
     super.dispose();
   }
+  bool isOtpValid() {
+    return _otpControllers.every((c) => c.text.trim().isNotEmpty);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -77,18 +81,22 @@ class _OtpVerifyScreenState extends State<OtpVerifyScreen> {
         padding: const EdgeInsets.all(16.0),
         child: BlocConsumer<OtpVerifyCubit, OtpVerifyState>(
             listener: (context, state) {
-              if (state.isOtpVerified) {
+              if (state.isSuccess) {
                 Navigator.pushNamed(
                   context,
                   RoutesName.loginPage,
-                  arguments: widget.useType,
+                  arguments:widget.useType,
                 );
               }
-
-              if (state.isOtpResent) {
+              if (state.isSuccess) {
                 ScaffoldMessenger.of(context).showSnackBar(
                   const SnackBar(content: Text('OTP resent successfully')),
                 );
+                // Navigator.pushNamed(
+                //   context,
+                //   RoutesName.loginPage,
+                //   arguments:'2',
+                // );
               }
 
               if (state.errorMessage != null) {
@@ -133,12 +141,14 @@ class _OtpVerifyScreenState extends State<OtpVerifyScreen> {
                             fillColor: Colors.grey.shade200,
                           ),
                           onChanged: (value) {
+                            setState(() {}); // <- Force rebuild to enable the button
                             if (value.isNotEmpty && index < 5) {
                               _focusNodes[index + 1].requestFocus();
                             } else if (value.isEmpty && index > 0) {
                               _focusNodes[index - 1].requestFocus();
                             }
                           },
+
                         ),
                       );
                     }),
@@ -148,8 +158,8 @@ class _OtpVerifyScreenState extends State<OtpVerifyScreen> {
                     onTap: _resendCooldown > 0
                         ? null
                         : () {
-                      final user = OtpEntity(email: widget.email, otp: '');
-                      context.read<OtpVerifyCubit>().resendOtp(user);
+                      final user = ResendOtpEntity(email: widget.email);
+                      context.read<OtpVerifyCubit>().resendVerifyOtp(user);
                       startResendCooldown();
                     },
                     child: Text(
@@ -164,16 +174,18 @@ class _OtpVerifyScreenState extends State<OtpVerifyScreen> {
                       ),
                     ),
                   ),
+
                   const SizedBox(height: 24),
                   state.isLoading
                       ? const Center(child: CircularProgressIndicator())
                       :ElevatedButton(
-                    onPressed: otpCode.length == 6 && !state.isLoading
+                    onPressed: isOtpValid() && !state.isLoading
                         ? () {
                       final user = OtpEntity(email: widget.email, otp: otpCode);
                       context.read<OtpVerifyCubit>().verifyOtp(user);
                     }
                         : null,
+
                     child: const Text('Verify OTP'),
                   ),
                   const SizedBox(height: 8),
@@ -196,7 +208,7 @@ class _OtpVerifyScreenState extends State<OtpVerifyScreen> {
                         style: const TextStyle(color: Colors.red),
                       ),
                     ),
-                  if (state.isOtpVerified)
+                  if (state.isSuccess)
                     const Padding(
                       padding: EdgeInsets.only(top: 16.0),
                       child: Text(

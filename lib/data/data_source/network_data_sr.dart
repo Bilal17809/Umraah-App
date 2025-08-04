@@ -1,4 +1,6 @@
 import 'package:umraah_app/data/model/create_package.dart';
+import 'package:umraah_app/data/model/resend_otp.dart';
+import 'package:umraah_app/data/model/update_profile_model.dart';
 
 import '../../core/config/api_routes.dart';
 import '../../core/network/api_client.dart';
@@ -57,10 +59,26 @@ class AuthRemoteDataSource {
   }
 
   // Verify OTP
-  Future<ApiResult> resendOtp(OtpVerifyModel otpModel) {
+  Future<ApiResult> resendOtp(ResendOtp otpModel) {
     return _client.post(ApiRoutes.resendOtp, otpModel.toJson());
   }
-  // Future<ApiResult> myPackages(String token){
-  //   return _client.get(ApiRoutes.myPackages,token: token);
-  // }
+  // update profile
+  Future<ApiResult> updateProfile(UpdateProfileModel user, String token) {
+    return _client.post(ApiRoutes.updateProfile, user.toJson(), token: token);
+  }
+  // update profile
+  Future<ApiResult> forgotPassword(String email) {
+    return _client.post(ApiRoutes.forgetPassword, {
+      'email': email,
+    });
+  }
+
+  Future<ApiResult> resetPassword(String token, String newPassword) {
+    return _client.post(ApiRoutes.resetPassword, {
+        "token": token,
+        "newPassword": newPassword,
+      },
+    );
+  }
+
 }

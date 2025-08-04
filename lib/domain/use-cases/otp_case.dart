@@ -1,5 +1,6 @@
+import 'package:umraah_app/domain/entities/resend_otp_entity.dart';
 import 'package:umraah_app/domain/entities/user_entities.dart';
-import '../../core/network/api_response.dart';
+import '/core/network/api_response.dart';
 import '../repositories/repositories.dart';
 
 class OtpVerifyUseCase {
@@ -11,7 +12,7 @@ class OtpVerifyUseCase {
     return repository.otpVerify(user);
   }
 
-  Future<ApiResult?> resendCall(OtpEntity user) {
-    return repository.resendOtp(user);
+  Future<ApiResult?> resendCall(ResendOtpEntity user) {
+    return repository.resendVerificationOtp(user);
   }
 }

@@ -1,13 +1,12 @@
-
 import 'package:flutter/material.dart';
+
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../../agency_tab/view/agency_tab_view.dart';
+import 'package:umraah_app/core/route/route_name.dart';
+import '/core/local_data_storage/local_storage.dart';
 import '../../signup/widgets/signup_form.dart';
-import '../../home/view/tab_bar_view/view/tab_bar_view.dart';
 import '/core/theme/app_colors.dart';
 import '/core/theme/app_theme.dart';
 import '/domain/entities/user_entities.dart';
-import '../../home/view/sign_up_view/view/sign_up_view.dart';
 import '../bloc/login_cubit.dart';
 import '../bloc/login_state.dart';
 
@@ -18,7 +17,6 @@ class LoginView extends StatefulWidget {
   @override
   State<LoginView> createState() => _LoginViewState();
 }
-
 class _LoginViewState extends State<LoginView> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final TextEditingController emailController = TextEditingController();
@@ -40,17 +38,15 @@ class _LoginViewState extends State<LoginView> {
       backgroundColor: kWhite,
       body: BlocConsumer<LoginCubit, LoginState>(
         listener: (context, state) {
-          if (state.isSuccess && state.errorMessage == null) {
+          if (state.isSuccess) {
+            SecureStorage.saveType(widget.userType);
             ScaffoldMessenger.of(context).showSnackBar(
               const SnackBar(content: Text("Login Successful")),
             );
-
             if (widget.userType == '2') {
-              Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) => AgencyTabView()));
+             Navigator.pushNamed(context, RoutesName.agencyDashboard);
             } else {
-              Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) => AgencyDashboardScreen()));
+              Navigator.pushNamed(context, RoutesName.userDashboard);
             }
           } else if (state.errorMessage != null) {
             ScaffoldMessenger.of(context).showSnackBar(
@@ -94,12 +90,19 @@ class _LoginViewState extends State<LoginView> {
                       const Text("Don't have an account? "),
                       GestureDetector(
                         onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(builder: (context) => SignUpView()),
-                          );
+                         Navigator.pushNamed(context,
+                             RoutesName.signUpPage,
+                           arguments: widget.userType
+                         );
                         },
                         child: const Text("Sign Up", style: TextStyle(color: Colors.green, fontWeight: FontWeight.bold)),
+                      ),
+                      SizedBox(height: 12,),
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.pushNamed(context,RoutesName.forgotPassword);
+                        },
+                        child: const Text("Forget Password", style: TextStyle(color: Colors.green, fontWeight: FontWeight.bold)),
                       ),
                     ],
                   )

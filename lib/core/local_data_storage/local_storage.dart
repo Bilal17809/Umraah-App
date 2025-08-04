@@ -7,14 +7,19 @@ class SecureStorage {
     await prefs.setString('auth_token', token);
   }
 
-  static Future<void> saveId(String id) async {
+  static Future<void> saveType(String type) async {
     final prefs = await SharedPreferences.getInstance();
-    await prefs.setString('user_id', id);
+    await prefs.setString('user_type', type);
   }
 
   static Future<void> saveEmial(String email) async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.setString('email', email);
+  }
+
+  static Future<void> savePassword(String password) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString('password', password);
   }
 
   static Future<void> saveuserProfilePhoto(String photoUrl) async {
@@ -53,9 +58,9 @@ class SecureStorage {
     return prefs.getString('auth_token');
   }
 
-  static Future<String?> getId() async {
+  static Future<String?> getUserType() async {
     final prefs = await SharedPreferences.getInstance();
-    return prefs.getString('user_id');
+    return prefs.getString('user_type');
   }
 
   static Future<String?> getEmial() async {

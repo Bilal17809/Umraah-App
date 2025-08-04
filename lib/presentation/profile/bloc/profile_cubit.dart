@@ -10,7 +10,7 @@ class ProfileCubit extends Cubit<ProfileState>{
 
   Future<void> getProfile() async {
     emit(state.copyWith(isLoading: true, isSuccess: false, errorMessage: null));
-    final result = await _profileUseCase();
+    final result = await _profileUseCase.call();
     if (result!.success) {
       emit(state.copyWith(
         isSuccess: true,
@@ -31,6 +31,7 @@ class ProfileCubit extends Cubit<ProfileState>{
     emit(state.copyWith(isLoading: true, isSuccess: false, errorMessage: null));
     final result = await _profileUseCase.call2();
     if (result != null && result.success) {
+      await SecureStorage.setLoggedInStatus(false);
       emit(state.copyWith(
         isSuccess: true,
         isLoading: false,

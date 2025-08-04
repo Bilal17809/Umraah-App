@@ -20,6 +20,7 @@ class MyPackagesView extends StatelessWidget {
             if (state.isLoading) {
               return const Center(child: CircularProgressIndicator());
             }
+
             if (state.errorMessage != null) {
               return Center(
                 child: Column(
@@ -35,29 +36,38 @@ class MyPackagesView extends StatelessWidget {
                 ),
               );
             }
-            if (state.isSuccess) {
-              // For demo, just show a success message. Replace with actual package list display.
-              return Center(
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    const Icon(Icons.check_circle_outline, color: Colors.green, size: 60),
-                    const SizedBox(height: 12),
-                    const Text("Packages loaded successfully!"),
-                    const SizedBox(height: 20),
-                    ElevatedButton(
-                      onPressed: () => context.read<MyPackageCubit>().myPackages(status: 3),
-                        child: const Text("Reload"),
+
+            if (state.isSuccess && state.data != null && state.data!.isNotEmpty) {
+              return ListView.builder(
+                itemCount: state.data!.length,
+                itemBuilder: (context, index) {
+                  final package = state.data![index];
+
+                  return Card(
+                    margin: const EdgeInsets.only(bottom: 12),
+                    child: ListTile(
+                      leading: package.packageImage != null && package.packageImage!.isNotEmpty
+                          ? Image.network(package.packageImage!, width: 50, height: 50, fit: BoxFit.cover)
+                          : const Icon(Icons.image),
+                      title: Text(package.packageName ?? "Unnamed Package"),
+                      subtitle: Text("Price: ${package.price ?? 'N/A'} | Days: ${package.noOfDays}"),
+                      trailing: const Icon(Icons.arrow_forward_ios),
+                      onTap: () {
+                        // optional: navigate to package detail
+                      },
                     ),
-                  ],
-                ),
+                  );
+                },
               );
             }
 
-            // Initial state - show a button to start loading packages
+            if (state.isSuccess && (state.data == null || state.data!.isEmpty)) {
+              return const Center(child: Text("No packages found."));
+            }
+
             return Center(
               child: ElevatedButton(
-                onPressed: () =>  context.read<MyPackageCubit>().myPackages(status: 3),
+                onPressed: () => cubit.myPackages(status: 3),
                 child: const Text("Load My Packages"),
               ),
             );

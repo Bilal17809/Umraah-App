@@ -6,8 +6,8 @@ import 'package:umraah_app/presentation/profile/view/profile_view.dart';
 import '../../create_packages/view/create_packages_view.dart';
 import '../../my_packages/view/my_package_view.dart';
 
-class AgencyTabView extends StatelessWidget {
-  const AgencyTabView({super.key});
+class AgencyDashboardScreen extends StatelessWidget {
+  const AgencyDashboardScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
