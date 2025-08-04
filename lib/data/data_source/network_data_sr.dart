@@ -50,7 +50,7 @@ class AuthRemoteDataSource {
   }
 
   // get myPackages
-  Future<ApiResult> myPackages(String token, {int status = 2}) {
+  Future<ApiResult> myPackages(String token, {required int status}) {
     return _client.getMyPackage(
       ApiRoutes.myPackages,
       token: token,
@@ -58,7 +58,7 @@ class AuthRemoteDataSource {
     );
   }
 
-  // Verify OTP
+    // Verify OTP
   Future<ApiResult> resendOtp(ResendOtp otpModel) {
     return _client.post(ApiRoutes.resendOtp, otpModel.toJson());
   }
@@ -81,4 +81,16 @@ class AuthRemoteDataSource {
     );
   }
 
+  Future<ApiResult> fetchPackages(String token) async {
+    return await _client.get(ApiRoutes.packages, token: token);
+  }
+
+  // put update package
+  Future<ApiResult> updatePackage(String id, CreatePackageModel package, String token) {
+    return _client.put("${ApiRoutes.updatePackage}$id", package.toJson(), token: token);
+  }
+
+  Future<ApiResult> deletePackage(String id,String token) {
+    return _client.deletePackage(ApiRoutes.deletePackage,token);
+  }
 }

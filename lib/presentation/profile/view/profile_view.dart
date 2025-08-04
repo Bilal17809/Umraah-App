@@ -15,10 +15,15 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
+  bool _initialized = false;
+
   @override
-  void initState() {
-    super.initState();
-    context.read<ProfileCubit>().getProfile();
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    if (!_initialized) {
+      _initialized = true;
+      context.read<ProfileCubit>().getProfile();
+    }
   }
 
   @override
@@ -86,14 +91,17 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           _AccountCell(
                             icon: Icons.person,
                             title: 'Personal information',
-                            onTap: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (_) => const UpdateProfile(),
-                                ),
-                              );
-                            },
+                              onTap: () async {
+                                final shouldRefresh = await Navigator.push(
+                                  context,
+                                  MaterialPageRoute(builder: (_) => const UpdateProfile()),
+                                );
+
+                                if (shouldRefresh == true && mounted) {
+                                  context.read<ProfileCubit>().getProfile();
+                                }
+                              }
+
                           ),
                           _AccountCell(icon: Icons.report, title: 'Report an Issue', onTap: () {}),
                           _AccountCell(icon: Icons.privacy_tip, title: 'Privacy & Security', onTap: () {}),

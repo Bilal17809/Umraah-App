@@ -1,13 +1,13 @@
-import 'package:umraah_app/domain/entities/user_entities.dart';
 import '/core/network/api_response.dart';
 import '../repositories/repositories.dart';
 
-class MyPackages {
+class MyPackagesUseCase {
   final UserRepository repository;
 
-  MyPackages(this.repository);
+  MyPackagesUseCase(this.repository);
 
-  Future<ApiResult?> call({int status = 2}) {
+  Future<ApiResult> call({required int status}) {
     return repository.myPackages(status: status);
   }
 }
+

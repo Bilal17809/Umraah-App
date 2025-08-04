@@ -23,7 +23,7 @@ class Routes {
         return MaterialPageRoute(builder: (_) => const ForgotPasswordScreen());
       case RoutesName.signUpPage:
         final userType=arguments as String;
-        return MaterialPageRoute(builder: (_) =>  SignupView(userType:userType));
+        return MaterialPageRoute(builder: (_) =>  SignupView());
       case RoutesName.loginPage:
         final userType= settings.arguments as String;
         return MaterialPageRoute(builder: (_) =>  LoginView(userType: userType,));

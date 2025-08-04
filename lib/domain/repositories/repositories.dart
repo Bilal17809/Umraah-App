@@ -15,8 +15,13 @@ abstract class UserRepository {
   Future<ApiResult<dynamic>> updateProfile(UpdateUserProfileEntity user);
   Future<ApiResult<dynamic>> logout();
   Future<ApiResult<dynamic>> deleteAccount();
-  Future<ApiResult<dynamic>> myPackages({int status});
+  Future<ApiResult> myPackages({required int status});
   Future<ApiResult<dynamic>> createPackage(CreatePackageEntity createPackage);
   Future<ApiResult> forgotPassword(String email);
   Future<ApiResult?> resetPassword(String token, String newPassword);
+  Future<ApiResult> getPackages();
+  Future<ApiResult> updatePackage(String id, CreatePackageEntity entity);
+
+  Future<ApiResult> deletePackage(String id);
+
 }

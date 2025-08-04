@@ -37,25 +37,25 @@ class _LoginViewState extends State<LoginView> {
       appBar: AppBar(backgroundColor: kWhite),
       backgroundColor: kWhite,
       body: BlocConsumer<LoginCubit, LoginState>(
-        listener: (context, state) {
-          if (state.isSuccess) {
-            SecureStorage.saveType(widget.userType);
-            ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(content: Text("Login Successful")),
-            );
-            if (widget.userType == '2') {
-             Navigator.pushNamed(context, RoutesName.agencyDashboard);
-            } else {
-              Navigator.pushNamed(context, RoutesName.userDashboard);
+          listener: (context, state) {
+            if (state.isSuccess) {
+              SecureStorage.saveType(widget.userType);
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(content: Text("Login Successful")),
+              );
+              if (widget.userType == '2') {
+                Navigator.pushNamed(context, RoutesName.agencyDashboard);
+              } else {
+                Navigator.pushNamed(context, RoutesName.userDashboard);
+              }
+            } else if (!state.isSuccess) {
+              // 👈 only show error if success has NOT happened
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(content: Text(state.errorMessage!)),
+              );
             }
-          } else if (state.errorMessage != null) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text(state.errorMessage!)),
-            );
-          }
-        },
-
-        builder: (context, state) {
+          },
+          builder: (context, state) {
           return Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
             child: Form(
@@ -98,6 +98,12 @@ class _LoginViewState extends State<LoginView> {
                         child: const Text("Sign Up", style: TextStyle(color: Colors.green, fontWeight: FontWeight.bold)),
                       ),
                       SizedBox(height: 12,),
+                    ],
+                  ),
+                  SizedBox(height: 16,),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
                       GestureDetector(
                         onTap: () {
                           Navigator.pushNamed(context,RoutesName.forgotPassword);
@@ -105,7 +111,7 @@ class _LoginViewState extends State<LoginView> {
                         child: const Text("Forget Password", style: TextStyle(color: Colors.green, fontWeight: FontWeight.bold)),
                       ),
                     ],
-                  )
+                  ),
                 ],
               ),
             ),

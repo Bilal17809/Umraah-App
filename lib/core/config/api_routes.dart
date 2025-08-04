@@ -10,5 +10,8 @@ class ApiRoutes {
   static const String logout = '/logout';
   static const String delete = '/deleteAccount';
   static const String createPackage= '/createPackage';
-  static const String myPackages= '/myPackages?status=2';
+  static const String myPackages= '/myPackages';
+  static const String packages= '/packages';
+  static const String updatePackage= '/updatePackage/';
+  static const String deletePackage= '/deletePackage/';
 }

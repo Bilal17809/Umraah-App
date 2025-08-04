@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-
 import 'package:flutter_bloc/flutter_bloc.dart';
+import '../../reset_password/view/reset_password_view.dart';
 import '../bloc/forgot_password_cubit.dart';
 import '../bloc/forgot_password_state.dart';
 
@@ -22,6 +22,17 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(content: Text("Reset link sent to your email")),
           );
+
+          final email = emailController.text.trim();
+          if (email.isNotEmpty) {
+            // Navigate to ResetPasswordScreen without token (user will enter token manually)
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (_) => const ResetPasswordScreen(),
+              ),
+            );
+          }
         } else if (state.errorMessage != null) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(content: Text(state.errorMessage!)),
@@ -46,7 +57,9 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                   onPressed: () {
                     final email = emailController.text.trim();
                     if (email.isNotEmpty) {
-                      context.read<ForgotPasswordCubit>().sendResetLink(email);
+                      context
+                          .read<ForgotPasswordCubit>()
+                          .sendResetLink(email);
                     }
                   },
                   child: const Text("Send Reset Link"),
@@ -59,3 +72,4 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
     );
   }
 }
+

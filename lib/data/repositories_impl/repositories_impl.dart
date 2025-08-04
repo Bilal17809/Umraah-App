@@ -58,17 +58,38 @@ class UserRepositoryImpl implements UserRepository {
 
 
 
-  // ✅ Login
+  // // ✅ Login
+  // @override
+  // Future<ApiResult> login(LoginEntity login) async {
+  //   final loginModel = LoginModel.fromEntity(login);
+  //   final result = await remoteDataSource.loginUser(loginModel);
+  //   if (result.success) {
+  //     final token = result.data;
+  //     await SecureStorage.saveToken(token);
+  //     SecureStorage.setLoggedInStatus(true);
+  //     return ApiResult(success: true, message: result.message ?? "Login successful", data: token);
+  //   }
+  //   return ApiResult(success: false, message: result.message ?? "Invalid credentials");
+  // }
   @override
   Future<ApiResult> login(LoginEntity login) async {
     final loginModel = LoginModel.fromEntity(login);
     final result = await remoteDataSource.loginUser(loginModel);
+
     if (result.success) {
       final token = result.data;
-      await SecureStorage.saveToken(token);
-      SecureStorage.setLoggedInStatus(true);
-      return ApiResult(success: true, message: result.message ?? "Login successful", data: token);
+
+      try {
+        await SecureStorage.saveToken(token);
+        await SecureStorage.setLoggedInStatus(true);
+
+        return ApiResult(success: true, message: result.message ?? "Login successful", data: token);
+      } catch (e) {
+        // If storage fails, treat as failure
+        // return ApiResult(success: false, message: "Local storage failed: ${e.toString()}");
+      }
     }
+
     return ApiResult(success: false, message: result.message ?? "Invalid credentials");
   }
 
@@ -132,10 +153,19 @@ class UserRepositoryImpl implements UserRepository {
     return  ApiResult(success: true, message: "create successfully",data: result);
   }
 
+  // @override
+  // Future<ApiResult> myPackages({int status = 2}) async {
+  //   final token = await SecureStorage.getToken();
+  //   if (token == null) {
+  //     return ApiResult(success: false, message: "Token not found");
+  //   }
+  //   final result = await remoteDataSource.myPackages(token, status: status);
+  //   return result;
+  // }
   @override
-  Future<ApiResult> myPackages({int status = 2}) async {
+  Future<ApiResult> myPackages({required int status}) async {
     final token = await SecureStorage.getToken();
-    if (token == null) {
+    if (token == null || token.isEmpty) {
       return ApiResult(success: false, message: "Token not found");
     }
     final result = await remoteDataSource.myPackages(token, status: status);
@@ -168,4 +198,35 @@ class UserRepositoryImpl implements UserRepository {
   Future<ApiResult?> resetPassword(String token, String newPassword) async{
     return await remoteDataSource.resetPassword(token, newPassword);
   }
+
+  @override
+  Future<ApiResult> getPackages() async {
+    final token = await SecureStorage.getToken();
+    if (token == null) {
+      return ApiResult(success: false, message: "Token not found");
+    }
+    final result = await remoteDataSource.fetchPackages(token);
+    return result;
+  }
+
+  @override
+  Future<ApiResult> updatePackage(String id, CreatePackageEntity entity) async {
+    final token = await SecureStorage.getToken();
+    if (token == null) {
+      return ApiResult(success: false, message: "Token not found");
+    }
+    final model = CreatePackageModel.fromEntity(entity);
+    final result = await remoteDataSource.updatePackage(id, model, token);
+    return result;
+  }
+
+  @override
+  Future<ApiResult> deletePackage(String id) async {
+    final token = await SecureStorage.getToken();
+    if (token == null) {
+      return ApiResult(success: false, message: "Token not found");
+    }
+    return await remoteDataSource.deletePackage(id,token);
+  }
+
 }

@@ -241,6 +241,7 @@ class _CreatePackagesViewState extends State<CreatePackagesView> {
                       packageTriplePrice: triplePriceController.text,
                       packageDoublePrice: doublePriceController.text,
                       packageInclude: packageIncludeController.text,
+                      packId: '',
                     );
                     cubit.createPackage(entity);
                   },

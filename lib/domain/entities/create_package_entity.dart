@@ -15,6 +15,8 @@ class CreatePackageEntity {
   final String packageTriplePrice;
   final String packageDoublePrice;
   final String packageInclude;
+  final String packId;
+  final int? status;
 
   const CreatePackageEntity({
     required this.noOfDays,
@@ -33,5 +35,7 @@ class CreatePackageEntity {
     required this.packageTriplePrice,
     required this.packageDoublePrice,
     required this.packageInclude,
+    required this.packId,
+    this.status,
   });
 }
