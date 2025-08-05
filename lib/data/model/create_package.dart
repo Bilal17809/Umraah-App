@@ -106,7 +106,6 @@ import 'dart:io';
 import '../../domain/entities/create_package_entity.dart';
 
 class CreatePackageModel {
-  final File? imageFile;
   final int noOfDays;
   final String startDate;
   final String makkahHotelName;
@@ -145,7 +144,6 @@ class CreatePackageModel {
     required this.packageInclude,
     required this.packId,
     this.status,
-    this.imageFile
   });
 
   static int parseInt(dynamic value) {

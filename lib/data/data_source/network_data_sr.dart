@@ -44,17 +44,9 @@ class AuthRemoteDataSource {
     return _client.delete(ApiRoutes.delete,token: token);
   }
 
-  // create packages
-  // Future<ApiResult> createPackage(CreatePackageModel createPackageModel,String token){
-  //   return _client.post(ApiRoutes.createPackage,createPackageModel.toJson(),token: token);
-  // }
-  Future<ApiResult> createPackage(CreatePackageModel model, String token) {
-    return _client.postMultipart(
-      ApiRoutes.createPackage,
-      model.toMultipartFields(),
-      model.imageFile,
-      token: token,
-    );
+  //create packages
+  Future<ApiResult> createPackage(CreatePackageModel createPackageModel,String token){
+    return _client.post(ApiRoutes.createPackage,createPackageModel.toJson(),token: token);
   }
 
 

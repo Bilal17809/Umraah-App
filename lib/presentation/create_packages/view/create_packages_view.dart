@@ -1,7 +1,9 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:http_parser/http_parser.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:mime/mime.dart';
 import 'package:umraah_app/core/theme/app_colors.dart';
 import 'package:umraah_app/core/theme/app_styles.dart';
 import 'package:umraah_app/core/theme/app_theme.dart';
@@ -285,6 +287,7 @@ class _CreatePackagesViewState extends State<CreatePackagesView> {
                       ),
                     ),
                   ),
+
                   onPressed: () {
                     if (_formKey.currentState!.validate()) {
                       final cubit = context.read<CreatePackageCubit>();
@@ -293,10 +296,14 @@ class _CreatePackagesViewState extends State<CreatePackagesView> {
                         startDate: startDateController.text,
                         makkahHotelName: makkahHotelNameController.text,
                         makkahHotelDistance: makkahHotelDistanceController.text,
-                        makkahHotelRating: double.tryParse(makkahHotelRatingController.text) ?? 0.0,
+                        makkahHotelRating:
+                            double.tryParse(makkahHotelRatingController.text) ??
+                            0.0,
                         madinaHotelName: madinaHotelNameController.text,
                         madinaHotelDistance: madinaHotelDistanceController.text,
-                        madinaHotelRating: double.tryParse(madinaHotelRatingController.text) ?? 0.0,
+                        madinaHotelRating:
+                            double.tryParse(madinaHotelRatingController.text) ??
+                            0.0,
                         detail: descriptionController.text,
                         flightNumber: flightNumberController.text,
                         airLine: airLineController.text,
@@ -306,41 +313,10 @@ class _CreatePackagesViewState extends State<CreatePackagesView> {
                         packageDoublePrice: doublePriceController.text,
                         packageInclude: packageIncludeController.text,
                         packId: '',
-                        imageFile: pickedImage, // ✅ THIS sends the actual image file
                       );
                       cubit.createPackage(entity);
                     }
                   },
-
-                  // onPressed: () {
-                  //   if (_formKey.currentState!.validate()) {
-                  //     final cubit = context.read<CreatePackageCubit>();
-                  //     final entity = CreatePackageEntity(
-                  //       noOfDays: int.tryParse(noOfDaysController.text) ?? 0,
-                  //       startDate: startDateController.text,
-                  //       makkahHotelName: makkahHotelNameController.text,
-                  //       makkahHotelDistance: makkahHotelDistanceController.text,
-                  //       makkahHotelRating:
-                  //           double.tryParse(makkahHotelRatingController.text) ??
-                  //           0.0,
-                  //       madinaHotelName: madinaHotelNameController.text,
-                  //       madinaHotelDistance: madinaHotelDistanceController.text,
-                  //       madinaHotelRating:
-                  //           double.tryParse(madinaHotelRatingController.text) ??
-                  //           0.0,
-                  //       detail: descriptionController.text,
-                  //       flightNumber: flightNumberController.text,
-                  //       airLine: airLineController.text,
-                  //       packageImage: pickedImage?.path ?? '',
-                  //       packageSharedPrice: sharedPriceController.text,
-                  //       packageTriplePrice: triplePriceController.text,
-                  //       packageDoublePrice: doublePriceController.text,
-                  //       packageInclude: packageIncludeController.text,
-                  //       packId: '',
-                  //     );
-                  //     cubit.createPackage(entity);
-                  //   }
-                  // },
                   child: const Text("Post Package"),
                 ),
               ],
@@ -439,5 +415,10 @@ class _BuildFormField extends StatelessWidget {
 /*
 eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwczovL2FwcHNvbGFjZS5jb20vdW1yYWhBcGkvIiwiYXVkIjoicHJvZHVjdGlvbl9hcGkiLCJpYXQiOjE3NTQzODU3NDAsImV4cCI6MTc1NDQ3MjE0MCwidXNlciI6eyJpZCI6IjUyIiwiZW1haWwiOiJiaWxhbGtod2FyMkBnbWFpbC5jb20iLCJmaXJzdE5hbWUiOiJiaWxhbCIsImxhc3ROYW1lIjoidWxoYXEiLCJwaG9uZU51bWJlciI6IjA5OTg4NTgiLCJ1c2VySW1hZ2UiOiIiLCJhZ2VuY3lJbWFnZSI6IiIsImNyZWF0ZWRBdCI6IjIwMjUtMDgtMDMgMjI6MzM6MDkiLCJ1c2VyVHlwZSI6IkFHRU5UIn19.eI6XEby28AxNdAOhFH5JTocoGbmPWqNsD0KVUeqSD7k
 */
+
+
+
+
+
 
 

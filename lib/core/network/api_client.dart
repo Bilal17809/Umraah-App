@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:http_parser/http_parser.dart';
 import '../config/enviroment_config.dart';
 import 'api_response.dart';
 import 'dart:io';
@@ -203,53 +204,60 @@ class ApiClient {
 
 
   // for images........
-  Future<ApiResult> postMultipart(String endpoint, Map<String, String> fields, File? image, {String? token})
-  async {
-    try {
-      final url = Uri.parse('$baseUrl$endpoint');
-      final request = http.MultipartRequest('POST', url);
-
-      // Add token if exists
-      if (token != null) {
-        request.headers['Authorization'] = 'Bearer $token';
-      }
-
-      // Add fields
-      request.fields.addAll(fields);
-
-      // Add image file if exists
-      if (image != null) {
-        final imageStream = http.MultipartFile.fromBytes(
-          'packageImage', // <-- this must match your API parameter name
-          await image.readAsBytes(),
-          filename: image.path.split("/").last,
-        );
-        request.files.add(imageStream);
-      }
-
-      final streamedResponse = await request.send();
-      final response = await http.Response.fromStream(streamedResponse);
-
-      print('#############🔁 Status Code: ${response.statusCode}');
-      print('################ 🔁 Body: ${response.body}');
-
-      Map<String, dynamic>? json;
-      try {
-        json = response.body.isNotEmpty ? jsonDecode(response.body) : null;
-      } catch (e) {
-        print("JSON decode error: $e");
-      }
-
-      return ApiResult(
-        success: response.statusCode == 200 || response.statusCode == 201,
-        message: json?['message'] ?? 'Unknown',
-        data: json?['data'],
-      );
-
-    } catch (e) {
-      return ApiResult(success: false, message: 'Error: ${e.toString()}');
-    }
-  }
+  // Future<ApiResult> postMultipart(String endpoint, Map<String, String> fields, File? image, {String? token})
+  // async {
+  //   try {
+  //     final url = Uri.parse('$baseUrl$endpoint');
+  //     final request = http.MultipartRequest('POST', url);
+  //
+  //     // Add token if exists
+  //     if (token != null) {
+  //       request.headers['Authorization'] = 'Bearer $token';
+  //     }
+  //
+  //     // Add fields
+  //     request.fields.addAll(fields);
+  //
+  //     // Add image file if exists
+  //     if (image != null) {
+  //       final bytes = await image.readAsBytes();
+  //
+  //       print("####################📦 Image byte length: ${bytes.length}");
+  //
+  //       final imageStream = http.MultipartFile.fromBytes(
+  //         'packageImage',
+  //         bytes,
+  //         filename: image.path.split("/").last,
+  //         contentType: MediaType('image', 'jpeg'),
+  //       );
+  //       request.files.add(imageStream);
+  //     }
+  //
+  //
+  //     final streamedResponse = await request.send();
+  //     final response = await http.Response.fromStream(streamedResponse);
+  //
+  //     print('#############🔁 Status Code: ${response.statusCode}');
+  //     print('################ 🔁 Body: ${response.body}');
+  //
+  //     Map<String, dynamic>? json;
+  //     try {
+  //       json = jsonDecode(response.body); // This will throw if body is empty or invalid
+  //     } catch (e) {
+  //       print("####################### JSON decode error: $e");
+  //     }
+  //
+  //
+  //     return ApiResult(
+  //       success: response.statusCode == 200 || response.statusCode == 201,
+  //       message: json?['message'] ?? 'Unknown',
+  //       data: json?['data'],
+  //     );
+  //
+  //   } catch (e) {
+  //     return ApiResult(success: false, message: 'Error: ${e.toString()}');
+  //   }
+  // }
 
 
 }
