@@ -1,19 +1,13 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:umraah_app/core/theme/app_colors.dart';
 import 'package:umraah_app/core/theme/app_styles.dart';
 import 'package:umraah_app/core/theme/app_theme.dart';
-
+import '../bloc/create_package_cubit.dart';
 import '../bloc/create_package_state.dart';
 import '/domain/entities/create_package_entity.dart';
-import '../bloc/create_package_cubit.dart';
-
-
-
-import 'dart:io';
-import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 
 class CreatePackagesView extends StatefulWidget {
   const CreatePackagesView({super.key});
@@ -23,23 +17,25 @@ class CreatePackagesView extends StatefulWidget {
 }
 
 class _CreatePackagesViewState extends State<CreatePackagesView> {
+  final _formKey = GlobalKey<FormState>();
+
   final packageNameController = TextEditingController();
   final priceController = TextEditingController();
   final descriptionController = TextEditingController();
-  final TextEditingController noOfDaysController = TextEditingController();
-  final TextEditingController startDateController = TextEditingController();
-  final TextEditingController makkahHotelNameController = TextEditingController();
-  final TextEditingController makkahHotelDistanceController = TextEditingController();
-  final TextEditingController makkahHotelRatingController = TextEditingController();
-  final TextEditingController madinaHotelNameController = TextEditingController();
-  final TextEditingController madinaHotelDistanceController = TextEditingController();
-  final TextEditingController madinaHotelRatingController = TextEditingController();
-  final TextEditingController flightNumberController = TextEditingController();
-  final TextEditingController airLineController = TextEditingController();
-  final TextEditingController sharedPriceController = TextEditingController();
-  final TextEditingController triplePriceController = TextEditingController();
-  final TextEditingController doublePriceController = TextEditingController();
-  final TextEditingController packageIncludeController = TextEditingController();
+  final noOfDaysController = TextEditingController();
+  final startDateController = TextEditingController();
+  final makkahHotelNameController = TextEditingController();
+  final makkahHotelDistanceController = TextEditingController();
+  final makkahHotelRatingController = TextEditingController();
+  final madinaHotelNameController = TextEditingController();
+  final madinaHotelDistanceController = TextEditingController();
+  final madinaHotelRatingController = TextEditingController();
+  final flightNumberController = TextEditingController();
+  final airLineController = TextEditingController();
+  final sharedPriceController = TextEditingController();
+  final triplePriceController = TextEditingController();
+  final doublePriceController = TextEditingController();
+  final packageIncludeController = TextEditingController();
 
   File? pickedImage;
   final ImagePicker _picker = ImagePicker();
@@ -52,6 +48,25 @@ class _CreatePackagesViewState extends State<CreatePackagesView> {
       });
     }
   }
+
+  void pickDate({
+    required BuildContext context,
+    required TextEditingController controller,
+  }) async {
+    final pickedDate = await showDatePicker(
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime(2000),
+      lastDate: DateTime(2100),
+    );
+
+    if (pickedDate != null) {
+      setState(() {
+        controller.text = pickedDate.toIso8601String().split('T').first;
+      });
+    }
+  }
+
 
   @override
   void dispose() {
@@ -90,7 +105,6 @@ class _CreatePackagesViewState extends State<CreatePackagesView> {
             ),
           );
 
-          // Clear form
           packageNameController.clear();
           priceController.clear();
           descriptionController.clear();
@@ -125,22 +139,20 @@ class _CreatePackagesViewState extends State<CreatePackagesView> {
       },
       child: Scaffold(
         backgroundColor: kWhite,
-        body: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+        body: Form(
+          key: _formKey,
           child: SingleChildScrollView(
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
                   "New Package",
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 25,
-                  ),
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25),
                 ),
                 const SizedBox(height: 10),
 
-                // Image picker container
+                // Image picker
                 GestureDetector(
                   onTap: _pickImage,
                   child: Container(
@@ -152,62 +164,115 @@ class _CreatePackagesViewState extends State<CreatePackagesView> {
                     ),
                     child: pickedImage == null
                         ? Center(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Icon(Icons.image, color: greyBorderColor, size: 34),
-                          const SizedBox(height: 2),
-                          Text(
-                            "Add Image",
-                            style: TextStyle(color: greyBorderColor, fontSize: 16),
-                          ),
-                        ],
-                      ),
-                    )
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Icon(
+                                    Icons.image,
+                                    color: greyBorderColor,
+                                    size: 34,
+                                  ),
+                                  const SizedBox(height: 2),
+                                  Text(
+                                    "Add Image",
+                                    style: TextStyle(
+                                      color: greyBorderColor,
+                                      fontSize: 16,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            )
                         : ClipRRect(
-                      borderRadius: BorderRadius.circular(10),
-                      child: Image.file(
-                        pickedImage!,
-                        fit: BoxFit.cover,
-                        width: double.infinity,
-                      ),
-                    ),
+                              borderRadius: BorderRadius.circular(10),
+                              child: Image.file(
+                                pickedImage!,
+                                fit: BoxFit.cover,
+                                width: double.infinity,
+                              ),
+                            ),
                   ),
                 ),
 
                 const SizedBox(height: 20),
 
-                _PostPackageForm(controller: packageNameController, hintTitle: "Package Name"),
-                const SizedBox(height: 20),
-                _PostPackageForm(controller: priceController, hintTitle: "Price", icon: Icons.attach_money),
-                const SizedBox(height: 12),
-
-                _PostPackageForm(controller: noOfDaysController, hintTitle: "No of Days"),
-                _PostPackageForm(controller: startDateController, hintTitle: "Start Date (YYYY-MM-DD)"),
-                _PostPackageForm(controller: makkahHotelNameController, hintTitle: "Makkah Hotel Name"),
-                _PostPackageForm(controller: makkahHotelDistanceController, hintTitle: "Makkah Hotel Distance (e.g. 500m)"),
-                _PostPackageForm(controller: makkahHotelRatingController, hintTitle: "Makkah Hotel Rating (e.g. 4.5)"),
-                _PostPackageForm(controller: madinaHotelNameController, hintTitle: "Madina Hotel Name"),
-                _PostPackageForm(controller: madinaHotelDistanceController, hintTitle: "Madina Hotel Distance"),
-                _PostPackageForm(controller: madinaHotelRatingController, hintTitle: "Madina Hotel Rating (e.g. 4.2)"),
-                _PostPackageForm(controller: flightNumberController, hintTitle: "Flight Number"),
-                _PostPackageForm(controller: airLineController, hintTitle: "Airline"),
-                _PostPackageForm(controller: sharedPriceController, hintTitle: "Shared Price"),
-                _PostPackageForm(controller: triplePriceController, hintTitle: "Triple Price"),
-                _PostPackageForm(controller: doublePriceController, hintTitle: "Double Price"),
-                _PostPackageForm(controller: packageIncludeController, hintTitle: "Package Includes (comma-separated)"),
-
-                Container(
-                  decoration: roundedDecoration,
-                  padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-                  child: TextFormField(
-                    controller: descriptionController,
-                    maxLines: 4,
-                    decoration: const InputDecoration(
-                      hintText: "Description",
-                      border: InputBorder.none,
-                    ),
+                // Form Fields
+                _BuildFormField(
+                  controller: packageNameController,
+                  label: "Package Name",
+                ),
+                _BuildFormField(controller: priceController, label: "Price"),
+                _BuildFormField(
+                  controller: noOfDaysController,
+                  label: "No of Days",
+                ),
+                _BuildFormField(
+                  controller: startDateController,
+                  label: "Start Date (YYYY-MM-DD)",
+                  suffixicon: Icon(
+                    Icons.date_range_rounded,
+                    color: Colors.grey,
+                    
                   ),
+                  onSuffixTap:
+                      () => pickDate(
+                        context: context,
+                        controller: startDateController,
+                      ),
+                ),
+                _BuildFormField(
+                  controller: makkahHotelNameController,
+                  label: "Makkah Hotel Name",
+                ),
+                _BuildFormField(
+                  controller: makkahHotelDistanceController,
+                  label: "Makkah Hotel Distance (e.g 500m)",
+                ),
+                _BuildFormField(
+                  controller: makkahHotelRatingController,
+                  label: "Makkah Hotel Rating (e.g 4.5)",
+                ),
+                _BuildFormField(
+                  controller: madinaHotelNameController,
+                  label: "Madina Hotel Name",
+                ),
+                _BuildFormField(
+                  controller: madinaHotelDistanceController,
+                  label: "Madina Hotel Distance",
+                ),
+                _BuildFormField(
+                  controller: madinaHotelRatingController,
+                  label: "Madina Hotel Rating (e.g. 4.2)",
+                ),
+                _BuildFormField(
+                  controller: flightNumberController,
+                  label: "Flight Number",
+                ),
+                _BuildFormField(
+                  controller: airLineController,
+                  label: "Airline",
+                ),
+                _BuildFormField(
+                  controller: sharedPriceController,
+                  label: "Shared Price",
+                ),
+                _BuildFormField(
+                  controller: triplePriceController,
+                  label: "Triple Price",
+                ),
+                _BuildFormField(
+                  controller: doublePriceController,
+                  label: "Double Price",
+                ),
+                _BuildFormField(
+                  controller: packageIncludeController,
+                  label: "Package Includes (comma-separated)",
+                ),
+                _BuildFormField(
+                  controller: descriptionController,
+                  label: "Description",
+                  maxLines: 4,
+                  borderRadius: 12,
                 ),
 
                 const SizedBox(height: 14),
@@ -223,27 +288,33 @@ class _CreatePackagesViewState extends State<CreatePackagesView> {
                     ),
                   ),
                   onPressed: () {
-                    final cubit = context.read<CreatePackageCubit>();
-                    final entity = CreatePackageEntity(
-                      noOfDays: int.tryParse(noOfDaysController.text) ?? 0,
-                      startDate: startDateController.text,
-                      makkahHotelName: makkahHotelNameController.text,
-                      makkahHotelDistance: makkahHotelDistanceController.text,
-                      makkahHotelRating: double.tryParse(makkahHotelRatingController.text) ?? 0.0,
-                      madinaHotelName: madinaHotelNameController.text,
-                      madinaHotelDistance: madinaHotelDistanceController.text,
-                      madinaHotelRating: double.tryParse(madinaHotelRatingController.text) ?? 0.0,
-                      detail: descriptionController.text,
-                      flightNumber: flightNumberController.text,
-                      airLine: airLineController.text,
-                      packageImage: pickedImage?.path ?? '',
-                      packageSharedPrice: sharedPriceController.text,
-                      packageTriplePrice: triplePriceController.text,
-                      packageDoublePrice: doublePriceController.text,
-                      packageInclude: packageIncludeController.text,
-                      packId: '',
-                    );
-                    cubit.createPackage(entity);
+                    if (_formKey.currentState!.validate()) {
+                      final cubit = context.read<CreatePackageCubit>();
+                      final entity = CreatePackageEntity(
+                        noOfDays: int.tryParse(noOfDaysController.text) ?? 0,
+                        startDate: startDateController.text,
+                        makkahHotelName: makkahHotelNameController.text,
+                        makkahHotelDistance: makkahHotelDistanceController.text,
+                        makkahHotelRating:
+                            double.tryParse(makkahHotelRatingController.text) ??
+                            0.0,
+                        madinaHotelName: madinaHotelNameController.text,
+                        madinaHotelDistance: madinaHotelDistanceController.text,
+                        madinaHotelRating:
+                            double.tryParse(madinaHotelRatingController.text) ??
+                            0.0,
+                        detail: descriptionController.text,
+                        flightNumber: flightNumberController.text,
+                        airLine: airLineController.text,
+                        packageImage: pickedImage?.path ?? '',
+                        packageSharedPrice: sharedPriceController.text,
+                        packageTriplePrice: triplePriceController.text,
+                        packageDoublePrice: doublePriceController.text,
+                        packageInclude: packageIncludeController.text,
+                        packId: '',
+                      );
+                      cubit.createPackage(entity);
+                    }
                   },
                   child: const Text("Post Package"),
                 ),
@@ -256,35 +327,85 @@ class _CreatePackagesViewState extends State<CreatePackagesView> {
   }
 }
 
-class _PostPackageForm extends StatelessWidget {
-  final String hintTitle;
-  final IconData? icon;
-  final TextEditingController? controller;
-  const _PostPackageForm({
+
+class _BuildFormField extends StatelessWidget {
+  final TextEditingController controller;
+  final String label;
+  final bool obscureText;
+  final int? maxLines;
+  final double? borderRadius;
+  final Widget? suffixicon;
+  final VoidCallback? onSuffixTap;
+  const _BuildFormField({
     super.key,
-    required this.hintTitle,
-    this.icon,
-    this.controller,
+    required this.controller,
+    required this.label,
+    this.obscureText = false,
+    this.maxLines,
+    this.borderRadius,
+    this.suffixicon,
+    this.onSuffixTap,
   });
 
   @override
   Widget build(BuildContext context) {
-    final height = MediaQuery.of(context).size.height;
-    return Container(
-      height: height * 0.09,
-      decoration: roundedDecoration,
-      child: Center(
-        child: TextFormField(
-          controller: controller,
-          decoration: InputDecoration(
-            hintText: hintTitle,
-            suffixIcon: icon != null ? Icon(icon, color: greyBorderColor) : null,
-            border: InputBorder.none,
-            contentPadding: const EdgeInsets.symmetric(horizontal: 20),
-          ),
-        ),
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 10),
+      child: FormField<String>(
+        validator:
+            (val) =>
+                controller.text.trim().isEmpty ? 'Please enter $label' : null,
+        builder: (field) {
+          final hasError = field.hasError;
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Container(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 16,
+                  vertical: 10,
+                ),
+                decoration: roundedDecoration.copyWith(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(borderRadius ?? 35),
+                ),
+                child: TextFormField(
+                  controller: controller,
+                  obscureText: obscureText,
+                  maxLines: maxLines,
+                  readOnly: onSuffixTap != null,
+                  onTap: onSuffixTap,
+                  onChanged: field.didChange,
+                  decoration: InputDecoration(
+                    border: InputBorder.none,
+                    suffixIcon:
+                        suffixicon != null
+                            ? GestureDetector(
+                              onTap: onSuffixTap,
+                              child: suffixicon,
+                            )
+                            : null,
+                    hintText: label,
+                    hintStyle: const TextStyle(
+                      color: Colors.grey,
+                      fontSize: 14,
+                    ),
+                    contentPadding: const EdgeInsets.symmetric(vertical: 08),
+                  ),
+                ),
+              ),
+              if (hasError)
+                Padding(
+                  padding: const EdgeInsets.only(left: 12, top: 6),
+                  child: Text(
+                    field.errorText ?? '',
+                    style: const TextStyle(color: Colors.red, fontSize: 12),
+                  ),
+                ),
+            ],
+          );
+        },
       ),
     );
   }
 }
-

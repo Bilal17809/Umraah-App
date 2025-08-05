@@ -22,27 +22,27 @@ class SignUpView extends StatelessWidget {
       backgroundColor: kWhite,
 body: Padding(
   padding: const EdgeInsets.symmetric(horizontal: 20,vertical: 10),
-  child: Column(
-    mainAxisAlignment: MainAxisAlignment.start,
-    crossAxisAlignment: CrossAxisAlignment.start,
-    children: [
-      Text("Sign Up",style: TextStyle(fontSize: 40,fontWeight: FontWeight.bold),),
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                "Sign Up",
+                style: TextStyle(fontSize: 40, fontWeight: FontWeight.bold),
+              ),
 
-      SizedBox(height: 20),
-         _sighnUpForm(hintTitle: "Name",
-         controller: nameController,
-         ),
-         SizedBox(height: 20),
-         _sighnUpForm(hintTitle: "Email",
-         controller: emailController,
-         ),
-         SizedBox(height: 20),
-         _sighnUpForm(hintTitle: "Password",
-         controller: passwordController,
-         ),
-           
+              SizedBox(height: 20),
+              _sighnUpForm(hintTitle: "Name", controller: nameController),
+              SizedBox(height: 20),
+              _sighnUpForm(hintTitle: "Email", controller: emailController),
+              SizedBox(height: 20),
+              _sighnUpForm(
+                hintTitle: "Password",
+                controller: passwordController,
+              ),
 
-            SizedBox(height: 20),
+              SizedBox(height: 20),
               ElevatedButton(
                 style: AppTheme.elevatedButtonStyle.copyWith(
                   backgroundColor: MaterialStateProperty.all(Colors.green),
@@ -56,24 +56,32 @@ body: Padding(
                 onPressed: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => NewAccountCreateView()),
+                    MaterialPageRoute(
+                      builder: (context) => NewAccountCreateView(),
+                    ),
                   );
                 },
                 child: const Text("Sign Up"),
               ),
-                SizedBox(height: 20),
+              SizedBox(height: 20),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text("Already have an account? "),
-                 GestureDetector(
-                  onTap: () {
-                    
-                  },
-                  child: Text("Log in",style: TextStyle(color: Colors.green,fontWeight: FontWeight.bold),))
+                  GestureDetector(
+                    onTap: () {},
+                    child: Text(
+                      "Log in",
+                      style: TextStyle(
+                        color: Colors.green,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
                 ],
-              )
-    ],
+              ),
+            ],
+          ),
   ),
 ),
     );

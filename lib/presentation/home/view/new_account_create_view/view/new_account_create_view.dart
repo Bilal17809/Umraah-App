@@ -24,29 +24,34 @@ class NewAccountCreateView extends StatelessWidget {
       backgroundColor: kWhite,
 body: Padding(
   padding: const EdgeInsets.symmetric(horizontal: 20,vertical: 10),
-  child: Column(
-    mainAxisAlignment: MainAxisAlignment.start,
-    crossAxisAlignment: CrossAxisAlignment.start,
-    children: [
-      Text("New Account",style: TextStyle(fontSize: 40,fontWeight: FontWeight.bold),),
-      SizedBox(height: 20),
-         _sighnUpForm(hintTitle: "Name",
-         controller: nameController,
-         ),
-         SizedBox(height: 20),
-         _sighnUpForm(hintTitle: "Email",
-         controller: emailAddressController,
-         ),
-         SizedBox(height: 20),
-         _sighnUpForm(hintTitle: "Password",
-         controller: passwordController,
-         ),
-          SizedBox(height: 20),
-         _sighnUpForm(hintTitle: "Confirm Password",
-         controller: conformationPasswordController,
-         ),
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                "New Account",
+                style: TextStyle(fontSize: 40, fontWeight: FontWeight.bold),
+              ),
+              SizedBox(height: 20),
+              _sighnUpForm(hintTitle: "Name", controller: nameController),
+              SizedBox(height: 20),
+              _sighnUpForm(
+                hintTitle: "Email",
+                controller: emailAddressController,
+              ),
+              SizedBox(height: 20),
+              _sighnUpForm(
+                hintTitle: "Password",
+                controller: passwordController,
+              ),
+              SizedBox(height: 20),
+              _sighnUpForm(
+                hintTitle: "Confirm Password",
+                controller: conformationPasswordController,
+              ),
 
-            SizedBox(height: 20),
+              SizedBox(height: 20),
               ElevatedButton(
                 style: AppTheme.elevatedButtonStyle.copyWith(
                   backgroundColor: MaterialStateProperty.all(Colors.green),
@@ -65,22 +70,26 @@ body: Padding(
                 },
                 child: const Text("Sign Up"),
               ),
-                SizedBox(height: 16),
-             
-                  Center(child: Text("Already have an account?",style: TextStyle(fontSize: 26),)),
-                   SizedBox(height: 12),
-            Center(
-              child: GestureDetector(
-                onTap: () {},
+              SizedBox(height: 16),
+
+              Center(
                 child: Text(
-                  "Log in",
-                  style: TextStyle(color: Colors.green, fontSize: 24),
+                  "Already have an account?",
+                  style: TextStyle(fontSize: 26),
                 ),
               ),
-            )
-                
-                
-    ],
+              SizedBox(height: 12),
+              Center(
+                child: GestureDetector(
+                  onTap: () {},
+                  child: Text(
+                    "Log in",
+                    style: TextStyle(color: Colors.green, fontSize: 24),
+                  ),
+                ),
+              ),
+            ],
+          ),
   ),
 ),
     );
