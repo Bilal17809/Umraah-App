@@ -101,9 +101,12 @@
 //   }
 // }
 
+import 'dart:io';
+
 import '../../domain/entities/create_package_entity.dart';
 
 class CreatePackageModel {
+  final File? imageFile;
   final int noOfDays;
   final String startDate;
   final String makkahHotelName;
@@ -142,6 +145,7 @@ class CreatePackageModel {
     required this.packageInclude,
     required this.packId,
     this.status,
+    this.imageFile
   });
 
   static int parseInt(dynamic value) {
@@ -227,6 +231,29 @@ class CreatePackageModel {
       if (status != null) "status": status,
     };
   }
+
+  Map<String, String> toMultipartFields() {
+    return {
+      "noOfDays": noOfDays.toString(),
+      "startDate": startDate,
+      "makkahHotelName": makkahHotelName,
+      "makkahHotelDistance": makkahHotelDistance,
+      "makkahHotelRating": makkahHotelRating.toString(),
+      "madinaHotelName": madinaHotelName,
+      "madinaHotelDistance": madinaHotelDistance,
+      "madinaHotelRating": madinaHotelRating.toString(),
+      "detail": detail,
+      "flightNumber": flightNumber,
+      "airLine": airLine,
+      "packageSharedPrice": packageSharedPrice,
+      "packageTriplePrice": packageTriplePrice,
+      "packageDoublePrice": packageDoublePrice,
+      "packageInclude": packageInclude,
+      "packId": packId,
+      if (status != null) "status": status.toString(),
+    };
+  }
+
 }
 
 

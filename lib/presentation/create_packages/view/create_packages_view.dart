@@ -5,9 +5,12 @@ import 'package:image_picker/image_picker.dart';
 import 'package:umraah_app/core/theme/app_colors.dart';
 import 'package:umraah_app/core/theme/app_styles.dart';
 import 'package:umraah_app/core/theme/app_theme.dart';
+import '../../../core/util/loader_dialog.dart';
+import '../../../core/util/toast_message.dart';
 import '../bloc/create_package_cubit.dart';
 import '../bloc/create_package_state.dart';
 import '/domain/entities/create_package_entity.dart';
+import 'package:http/http.dart' as http;
 
 class CreatePackagesView extends StatefulWidget {
   const CreatePackagesView({super.key});
@@ -48,6 +51,7 @@ class _CreatePackagesViewState extends State<CreatePackagesView> {
       });
     }
   }
+
 
   void pickDate({
     required BuildContext context,
@@ -97,44 +101,38 @@ class _CreatePackagesViewState extends State<CreatePackagesView> {
 
     return BlocListener<CreatePackageCubit, CreatePackageState>(
       listener: (context, state) {
-        if (state.isSuccess) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: const Text('🎉 Package created successfully!'),
-              backgroundColor: Colors.green,
-            ),
-          );
-
-          packageNameController.clear();
-          priceController.clear();
-          descriptionController.clear();
-          noOfDaysController.clear();
-          startDateController.clear();
-          makkahHotelNameController.clear();
-          makkahHotelDistanceController.clear();
-          makkahHotelRatingController.clear();
-          madinaHotelNameController.clear();
-          madinaHotelDistanceController.clear();
-          madinaHotelRatingController.clear();
-          flightNumberController.clear();
-          airLineController.clear();
-          sharedPriceController.clear();
-          triplePriceController.clear();
-          doublePriceController.clear();
-          packageIncludeController.clear();
-
-          setState(() {
-            pickedImage = null;
-          });
+        if (state.isLoading) {
+          LoaderDialog().showLoaderDialog(context);
         }
+        else{
+          LoaderDialog().hideLoaderDialog(context);
+          if (state.isSuccess) {
+            packageNameController.clear();
+            priceController.clear();
+            descriptionController.clear();
+            noOfDaysController.clear();
+            startDateController.clear();
+            makkahHotelNameController.clear();
+            makkahHotelDistanceController.clear();
+            makkahHotelRatingController.clear();
+            madinaHotelNameController.clear();
+            madinaHotelDistanceController.clear();
+            madinaHotelRatingController.clear();
+            flightNumberController.clear();
+            airLineController.clear();
+            sharedPriceController.clear();
+            triplePriceController.clear();
+            doublePriceController.clear();
+            packageIncludeController.clear();
 
-        if (state.errorMessage != null) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text('❌ Error: ${state.errorMessage}'),
-              backgroundColor: Colors.red,
-            ),
-          );
+            setState(() {
+              pickedImage = null;
+            });
+            showToast(context, 'Package Created successfully', Colors.green);
+          }
+          else if (state.errorMessage != null) {
+            showToast(context, 'create failed', Colors.red);
+          }
         }
       },
       child: Scaffold(
@@ -295,14 +293,10 @@ class _CreatePackagesViewState extends State<CreatePackagesView> {
                         startDate: startDateController.text,
                         makkahHotelName: makkahHotelNameController.text,
                         makkahHotelDistance: makkahHotelDistanceController.text,
-                        makkahHotelRating:
-                            double.tryParse(makkahHotelRatingController.text) ??
-                            0.0,
+                        makkahHotelRating: double.tryParse(makkahHotelRatingController.text) ?? 0.0,
                         madinaHotelName: madinaHotelNameController.text,
                         madinaHotelDistance: madinaHotelDistanceController.text,
-                        madinaHotelRating:
-                            double.tryParse(madinaHotelRatingController.text) ??
-                            0.0,
+                        madinaHotelRating: double.tryParse(madinaHotelRatingController.text) ?? 0.0,
                         detail: descriptionController.text,
                         flightNumber: flightNumberController.text,
                         airLine: airLineController.text,
@@ -312,10 +306,41 @@ class _CreatePackagesViewState extends State<CreatePackagesView> {
                         packageDoublePrice: doublePriceController.text,
                         packageInclude: packageIncludeController.text,
                         packId: '',
+                        imageFile: pickedImage, // ✅ THIS sends the actual image file
                       );
                       cubit.createPackage(entity);
                     }
                   },
+
+                  // onPressed: () {
+                  //   if (_formKey.currentState!.validate()) {
+                  //     final cubit = context.read<CreatePackageCubit>();
+                  //     final entity = CreatePackageEntity(
+                  //       noOfDays: int.tryParse(noOfDaysController.text) ?? 0,
+                  //       startDate: startDateController.text,
+                  //       makkahHotelName: makkahHotelNameController.text,
+                  //       makkahHotelDistance: makkahHotelDistanceController.text,
+                  //       makkahHotelRating:
+                  //           double.tryParse(makkahHotelRatingController.text) ??
+                  //           0.0,
+                  //       madinaHotelName: madinaHotelNameController.text,
+                  //       madinaHotelDistance: madinaHotelDistanceController.text,
+                  //       madinaHotelRating:
+                  //           double.tryParse(madinaHotelRatingController.text) ??
+                  //           0.0,
+                  //       detail: descriptionController.text,
+                  //       flightNumber: flightNumberController.text,
+                  //       airLine: airLineController.text,
+                  //       packageImage: pickedImage?.path ?? '',
+                  //       packageSharedPrice: sharedPriceController.text,
+                  //       packageTriplePrice: triplePriceController.text,
+                  //       packageDoublePrice: doublePriceController.text,
+                  //       packageInclude: packageIncludeController.text,
+                  //       packId: '',
+                  //     );
+                  //     cubit.createPackage(entity);
+                  //   }
+                  // },
                   child: const Text("Post Package"),
                 ),
               ],
@@ -408,4 +433,11 @@ class _BuildFormField extends StatelessWidget {
       ),
     );
   }
+
 }
+
+/*
+eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwczovL2FwcHNvbGFjZS5jb20vdW1yYWhBcGkvIiwiYXVkIjoicHJvZHVjdGlvbl9hcGkiLCJpYXQiOjE3NTQzODU3NDAsImV4cCI6MTc1NDQ3MjE0MCwidXNlciI6eyJpZCI6IjUyIiwiZW1haWwiOiJiaWxhbGtod2FyMkBnbWFpbC5jb20iLCJmaXJzdE5hbWUiOiJiaWxhbCIsImxhc3ROYW1lIjoidWxoYXEiLCJwaG9uZU51bWJlciI6IjA5OTg4NTgiLCJ1c2VySW1hZ2UiOiIiLCJhZ2VuY3lJbWFnZSI6IiIsImNyZWF0ZWRBdCI6IjIwMjUtMDgtMDMgMjI6MzM6MDkiLCJ1c2VyVHlwZSI6IkFHRU5UIn19.eI6XEby28AxNdAOhFH5JTocoGbmPWqNsD0KVUeqSD7k
+*/
+
+

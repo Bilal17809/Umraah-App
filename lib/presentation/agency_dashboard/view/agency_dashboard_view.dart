@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:umraah_app/core/theme/app_colors.dart';
-import 'package:umraah_app/domain/use-cases/my_packages.dart';
-import 'package:umraah_app/presentation/profile/view/profile_view.dart';
 
+import 'package:umraah_app/core/theme/app_colors.dart';
+import 'package:umraah_app/presentation/active_packages/view/active_package_view.dart';
+import 'package:umraah_app/presentation/profile/view/profile_view.dart';
 import '../../create_packages/view/create_packages_view.dart';
 import '../../my_packages/view/my_package_view.dart';
 
@@ -32,7 +32,7 @@ class AgencyDashboardScreen extends StatelessWidget {
         ),
         body:  TabBarView(
           children: [
-            Center(child: Text("Active")),
+            ActivePackageView(),
             MyPackagesView(),
             CreatePackagesView(),
             ProfileScreen(),

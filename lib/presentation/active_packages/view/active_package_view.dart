@@ -1,23 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../../update_package/view/update_package_view.dart';
-import '../bloc/my_package_cubit.dart';
-import '../bloc/my_packages_state.dart';
 
+import '../../my_packages/bloc/my_package_cubit.dart';
+import '../../my_packages/bloc/my_packages_state.dart';
 
-class MyPackagesView extends StatefulWidget {
-  const MyPackagesView({super.key});
+class ActivePackageView extends StatefulWidget {
+  const ActivePackageView({super.key});
 
   @override
-  State<MyPackagesView> createState() => _MyPackagesViewState();
+  State<ActivePackageView> createState() => _ActivePackageViewState();
 }
 
-class _MyPackagesViewState extends State<MyPackagesView> {
-
+class _ActivePackageViewState extends State<ActivePackageView> {
   @override
   void initState() {
     super.initState();
-    context.read<MyPackageCubit>().myPackages(status: 0);
+    context.read<MyPackageCubit>().myPackages(status: 3);
   }
 
   @override
@@ -73,15 +71,15 @@ class _MyPackagesViewState extends State<MyPackagesView> {
                           icon: const Icon(Icons.more_vert),
                           onSelected: (value) {
                             if (value == 'update') {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (_) => UpdatePackageScreen(
-                                    packageId: package.packId,
-                                    existingData: package,
-                                  ),
-                                ),
-                              );
+                              // Navigator.push(
+                              //   context,
+                              //   MaterialPageRoute(
+                              //     builder: (_) => UpdatePackageScreen(
+                              //       packageId: package.packId,
+                              //       existingData: package,
+                              //     ),
+                              //   ),
+                              // );
                             }
                             if(value == 'delete'){
                               context.read<MyPackageCubit>().deletePackage(id:package.packId);
@@ -111,6 +109,4 @@ class _MyPackagesViewState extends State<MyPackagesView> {
       ),
     );
   }
-
-
 }

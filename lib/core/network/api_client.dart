@@ -177,7 +177,7 @@ class ApiClient {
 
   Future<ApiResult> deletePackage(String id, String token) async {
     try {
-      final url = Uri.parse('$baseUrl/$deletePackage/$id');
+      final url = Uri.parse('$baseUrl$deletePackage$id');
       final response = await http.delete(
         url,
         headers: {
@@ -186,8 +186,9 @@ class ApiClient {
         },
       );
 
-      print('🔁 DELETE Status Code: ${response.statusCode}');
+      print('################## 🔁 DELETE Status Code: ${response.statusCode}');
       print('🔁 DELETE Response Body: ${response.body}');
+      print("####################### id of the package: $id");
 
       final json = jsonDecode(response.body);
 
@@ -195,6 +196,56 @@ class ApiClient {
         success: response.statusCode == 200,
         message: json['message'] ?? 'Unknown',
       );
+    } catch (e) {
+      return ApiResult(success: false, message: 'Error: ${e.toString()}');
+    }
+  }
+
+
+  // for images........
+  Future<ApiResult> postMultipart(String endpoint, Map<String, String> fields, File? image, {String? token})
+  async {
+    try {
+      final url = Uri.parse('$baseUrl$endpoint');
+      final request = http.MultipartRequest('POST', url);
+
+      // Add token if exists
+      if (token != null) {
+        request.headers['Authorization'] = 'Bearer $token';
+      }
+
+      // Add fields
+      request.fields.addAll(fields);
+
+      // Add image file if exists
+      if (image != null) {
+        final imageStream = http.MultipartFile.fromBytes(
+          'packageImage', // <-- this must match your API parameter name
+          await image.readAsBytes(),
+          filename: image.path.split("/").last,
+        );
+        request.files.add(imageStream);
+      }
+
+      final streamedResponse = await request.send();
+      final response = await http.Response.fromStream(streamedResponse);
+
+      print('#############🔁 Status Code: ${response.statusCode}');
+      print('################ 🔁 Body: ${response.body}');
+
+      Map<String, dynamic>? json;
+      try {
+        json = response.body.isNotEmpty ? jsonDecode(response.body) : null;
+      } catch (e) {
+        print("JSON decode error: $e");
+      }
+
+      return ApiResult(
+        success: response.statusCode == 200 || response.statusCode == 201,
+        message: json?['message'] ?? 'Unknown',
+        data: json?['data'],
+      );
+
     } catch (e) {
       return ApiResult(success: false, message: 'Error: ${e.toString()}');
     }

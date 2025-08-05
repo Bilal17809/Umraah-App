@@ -1,10 +1,10 @@
 import '../../core/network/api_response.dart';
 import '../repositories/repositories.dart';
 
-class DeletePackage {
+class DeletePackageCase {
   final UserRepository repository;
 
-  DeletePackage(this.repository);
+  DeletePackageCase(this.repository);
 
   Future<ApiResult> call(String id) {
     return repository.deletePackage(id);

@@ -2,7 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:umraah_app/data/model/create_package.dart';
 
-import '../../../domain/entities/create_package_entity.dart';
+import '../../../core/common/primary_button.dart';
+import '/core/theme/app_styles.dart';
+import '/core/util/loader_dialog.dart';
+import '/core/util/toast_message.dart';
+import '/domain/entities/create_package_entity.dart';
 import '../../signup/widgets/signup_form.dart';
 import '../bloc/update_package_cubit.dart';
 import '../bloc/update_package_state.dart';
@@ -28,6 +32,20 @@ class _UpdatePackageScreenState extends State<UpdatePackageScreen> {
   late TextEditingController startDateController;
   late TextEditingController daysController;
 
+  late TextEditingController makkahHotelName;
+  late TextEditingController makkaHotelDistance;
+  late TextEditingController makkaHotelRating;
+  late TextEditingController madinaHotelName;
+  late TextEditingController madinaHotelDistance;
+  late TextEditingController madinaHotelRating;
+
+  late TextEditingController flightNumber;
+  late TextEditingController airline;
+  late TextEditingController sharePrice;
+  late TextEditingController triplePrice;
+  late TextEditingController doublePrice;
+  late TextEditingController packageIncluded;
+
   @override
   void initState() {
     super.initState();
@@ -37,6 +55,21 @@ class _UpdatePackageScreenState extends State<UpdatePackageScreen> {
         TextEditingController(text: widget.existingData.startDate);
     daysController =
         TextEditingController(text: widget.existingData.noOfDays.toString());
+
+    makkahHotelName = TextEditingController(text: widget.existingData.makkahHotelName.toString());
+    makkaHotelDistance = TextEditingController(text: widget.existingData.makkahHotelDistance.toString());
+    makkaHotelRating = TextEditingController(text: widget.existingData.makkahHotelRating.toString());
+
+    madinaHotelName = TextEditingController(text: widget.existingData.madinaHotelName.toString());
+    madinaHotelDistance = TextEditingController(text: widget.existingData.madinaHotelDistance.toString());
+    madinaHotelRating = TextEditingController(text: widget.existingData.madinaHotelDistance.toString());
+
+    flightNumber = TextEditingController(text: widget.existingData.flightNumber.toString());
+    airline = TextEditingController(text: widget.existingData.airLine.toString());
+    sharePrice = TextEditingController(text: widget.existingData.packageSharedPrice.toString());
+    triplePrice = TextEditingController(text: widget.existingData.packageTriplePrice.toString());
+    doublePrice = TextEditingController(text: widget.existingData.packageDoublePrice.toString());
+    packageIncluded = TextEditingController(text: widget.existingData.packageInclude.toString());
   }
 
   @override
@@ -69,19 +102,31 @@ class _UpdatePackageScreenState extends State<UpdatePackageScreen> {
       packageInclude: '', packId: '',
     );
 
-    context.read<UpdatePackageCubit>().update('${widget.packageId}', updatedPackage);
+    context.read<UpdatePackageCubit>().update(widget.packageId, updatedPackage);
   }
+
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Update Package')),
+      backgroundColor: Colors.white,
+      appBar: AppBar(
+          backgroundColor: Colors.white,
+          title: Text('Update Package',style: titleMediumStyle,)),
       body: Padding(
         padding: const EdgeInsets.all(16),
         child: BlocConsumer<UpdatePackageCubit, UpdatePackageState>(
           listener: (context, state) {
-            if (state.isSuccess) {
-              Navigator.pop(context, true); // return to previous screen
+            if (state.isLoading) {
+             LoaderDialog().showLoaderDialog(context);
+            }
+            else {
+              LoaderDialog().hideLoaderDialog(context);
+              if (state.isSuccess) {
+                showToast(context, 'Package updated successfully', Colors.green);
+              } else if (state.errorMessage != null) {
+                showToast(context, 'Update failed', Colors.red);
+              }
             }
           },
           builder: (context, state) {
@@ -93,21 +138,63 @@ class _UpdatePackageScreenState extends State<UpdatePackageScreen> {
                     label: "Makkah Hotel Name",
                     controller: makkahHotelNameController,
                   ),
-                  const SizedBox(height: 12),
                   BuildFormField(
                     label: "Start Date",
                     controller: startDateController,
                   ),
-                  const SizedBox(height: 12),
                   BuildFormField(
                     label: "No of Days",
                     controller: daysController,
                   ),
-                  const SizedBox(height: 24),
-                  ElevatedButton(
-                    onPressed: state.isLoading ? null : _submitUpdate,
-                    child: const Text("Update Package"),
-                  )
+                  BuildFormField(
+                    label: "Makkah Hotel Name",
+                    controller: makkahHotelName,
+                  ),
+                  BuildFormField(
+                    label: "Makkah Hotel Distance",
+                    controller: makkaHotelDistance,
+                  ),
+                  BuildFormField(
+                    label: "Makkah Hotel Rating",
+                    controller: makkaHotelRating,
+                  ),
+                  BuildFormField(
+                    label: "Madina Hotel Name",
+                    controller: madinaHotelName,
+                  ),
+                  BuildFormField(
+                    label: "Madina Hotel Distance",
+                    controller: madinaHotelDistance,
+                  ),
+                  BuildFormField(
+                    label: "Flight Number",
+                    controller: flightNumber,
+                  ),
+                  const SizedBox(height: 12),
+                  BuildFormField(
+                    label: "Shared Price",
+                    controller: sharePrice,
+                  ),
+                  BuildFormField(
+                    label: "Triple Price",
+                    controller: triplePrice,
+                  ),
+                  BuildFormField(
+                    label: "Double Price",
+                    controller:doublePrice,
+                  ),
+                  BuildFormField(
+                    label: "Package Included",
+                    controller:packageIncluded,
+                  ),
+                  SizedBox(height: 20,),
+                  PrimaryButton(
+                    text: 'Update Package',
+                    onTap:(){
+                      state.isLoading ? null : _submitUpdate();
+                    },
+                  ),
+                  SizedBox(height: 12,),
                 ],
               ),
             );

@@ -1,3 +1,5 @@
+import 'dart:io';
+
 class CreatePackageEntity {
   final int noOfDays;
   final String startDate;
@@ -17,6 +19,8 @@ class CreatePackageEntity {
   final String packageInclude;
   final String packId;
   final int? status;
+  final File? imageFile; // ✅ Add this for actual file upload
+
 
   const CreatePackageEntity({
     required this.noOfDays,
@@ -37,5 +41,6 @@ class CreatePackageEntity {
     required this.packageInclude,
     required this.packId,
     this.status,
+    this.imageFile
   });
 }

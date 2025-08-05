@@ -38,7 +38,7 @@ class BuildFormField extends StatelessWidget {
                   decoration: InputDecoration(
                     border: InputBorder.none,
                     hintText:label,
-                    contentPadding: const EdgeInsets.symmetric(vertical: 14),
+                    contentPadding: const EdgeInsets.symmetric(vertical: 14,horizontal: 16),
                   ),
                 ),
               ),

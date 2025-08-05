@@ -45,9 +45,19 @@ class AuthRemoteDataSource {
   }
 
   // create packages
-  Future<ApiResult> createPackage(CreatePackageModel createPackageModel,String token){
-    return _client.post(ApiRoutes.createPackage,createPackageModel.toJson(),token: token);
+  // Future<ApiResult> createPackage(CreatePackageModel createPackageModel,String token){
+  //   return _client.post(ApiRoutes.createPackage,createPackageModel.toJson(),token: token);
+  // }
+  Future<ApiResult> createPackage(CreatePackageModel model, String token) {
+    return _client.postMultipart(
+      ApiRoutes.createPackage,
+      model.toMultipartFields(),
+      model.imageFile,
+      token: token,
+    );
   }
+
+
 
   // get myPackages
   Future<ApiResult> myPackages(String token, {required int status}) {

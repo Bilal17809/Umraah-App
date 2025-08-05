@@ -8,4 +8,5 @@ class RoutesName {
   static const String profilePage = 'profile_page';
   static const String otpPage = 'otp_page';
   static const String forgotPassword = 'forgotPassword_page';
+  static const String activePackage = 'activePackage_page';
 }

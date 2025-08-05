@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:umraah_app/core/route/route_name.dart';
+import 'package:umraah_app/presentation/active_packages/view/active_package_view.dart';
 import 'package:umraah_app/presentation/home/view/dashboard_view/view/dashboard_view.dart';
 import 'package:umraah_app/presentation/login/view/login_view.dart';
 import 'package:umraah_app/presentation/profile/view/profile_view.dart';
@@ -33,6 +34,8 @@ class Routes {
         return MaterialPageRoute(builder: (_) => const AgencyDashboardScreen());
       case RoutesName.profilePage:
         return MaterialPageRoute(builder: (_) => const ProfileScreen());
+      case RoutesName.activePackage:
+        return MaterialPageRoute(builder: (_) => const ActivePackageView());
       case RoutesName.otpPage:
         final args = settings.arguments as Map<String, String>;
         final email = args['email'] ?? '';

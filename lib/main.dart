@@ -25,6 +25,7 @@ import 'core/route/route.dart';
 import 'core/route/route_name.dart';
 import 'data/data_source/network_data_sr.dart';
 import 'data/repositories_impl/repositories_impl.dart';
+import 'domain/use-cases/delete_package_case.dart';
 import 'domain/use-cases/update_package.dart';
 
 void main() {
@@ -42,6 +43,7 @@ void main() {
   final forgotPassword = ForgotPasswordUseCase(userRepository);
   final resetPassword = ResetPasswordCase(userRepository);
   final updatePackage = UpdatePackageCase(userRepository);
+  final deletePackages = DeletePackageCase(userRepository);
 
   runApp(MyApp(
     registerUseCase: registerUseCase,
@@ -54,6 +56,7 @@ void main() {
     forgotPasswordUseCase: forgotPassword,
     resetPasswordCase: resetPassword,
     updatePackageCase: updatePackage,
+    deletePackageCase: deletePackages,
   ));
 }
 
@@ -68,6 +71,7 @@ class MyApp extends StatelessWidget {
   final ForgotPasswordUseCase forgotPasswordUseCase;
   final ResetPasswordCase resetPasswordCase;
   final UpdatePackageCase updatePackageCase;
+  final DeletePackageCase deletePackageCase;
 
   const MyApp({
     super.key,
@@ -80,7 +84,8 @@ class MyApp extends StatelessWidget {
     required this.updateProfileCase,
     required this.forgotPasswordUseCase,
     required this.resetPasswordCase,
-    required this.updatePackageCase
+    required this.updatePackageCase,
+    required this.deletePackageCase
 
   });
 
@@ -105,7 +110,7 @@ class MyApp extends StatelessWidget {
           create: (_) => CreatePackageCubit(createPackages),
         ),
         BlocProvider(
-          create: (_) => MyPackageCubit(myPackages),
+          create: (_) => MyPackageCubit(myPackages,deletePackageCase),
         ),
         BlocProvider(
           create: (_) => UpdateProfileCubit(updateProfileCase),
@@ -115,6 +120,9 @@ class MyApp extends StatelessWidget {
         ),
         BlocProvider(
           create: (_) => ResetPasswordCubit(resetPasswordCase),
+        ),
+        BlocProvider(
+          create: (_) => UpdatePackageCubit(updatePackageCase),
         ),
         BlocProvider(
           create: (_) => UpdatePackageCubit(updatePackageCase),
