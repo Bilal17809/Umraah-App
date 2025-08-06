@@ -54,6 +54,7 @@ class _MyPackagesViewState extends State<MyPackagesView> {
                   itemBuilder: (context, index) {
                     final package = state.data![index];
                     final imageUrl = package.packageImage;
+                    print("#################### >>> $imageUrl");
 
                     return Card(
                       margin: const EdgeInsets.only(bottom: 12),
@@ -85,6 +86,7 @@ class _MyPackagesViewState extends State<MyPackagesView> {
                             }
                             if(value == 'delete'){
                               context.read<MyPackageCubit>().deletePackage(id:package.packId);
+                              print("################${package.packId}");
                             }
                           },
                           itemBuilder: (BuildContext context) => [

@@ -2,9 +2,9 @@ import 'package:umraah_app/data/model/create_package.dart';
 import 'package:umraah_app/data/model/resend_otp.dart';
 import 'package:umraah_app/data/model/update_profile_model.dart';
 
-import '../../core/config/api_routes.dart';
-import '../../core/network/api_client.dart';
-import '../../core/network/api_response.dart';
+import '/core/config/api_routes.dart';
+import '/core/network/api_client.dart';
+import '/core/network/api_response.dart';
 import '../model/login_model.dart';
 import '../model/registration_model.dart';
 import '../model/verifyopt_model.dart';
@@ -93,6 +93,6 @@ class AuthRemoteDataSource {
   }
 
   Future<ApiResult> deletePackage(String id,String token) {
-    return _client.deletePackage(ApiRoutes.deletePackage,token);
+    return _client.deletePackage(ApiRoutes.deletePackage,id,token);
   }
 }

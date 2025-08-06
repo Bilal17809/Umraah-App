@@ -1,9 +1,11 @@
+import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:http_parser/http_parser.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:mime/mime.dart';
+import 'package:umraah_app/core/local_data_storage/local_storage.dart';
 import 'package:umraah_app/core/theme/app_colors.dart';
 import 'package:umraah_app/core/theme/app_styles.dart';
 import 'package:umraah_app/core/theme/app_theme.dart';
@@ -319,6 +321,11 @@ class _CreatePackagesViewState extends State<CreatePackagesView> {
                   },
                   child: const Text("Post Package"),
                 ),
+
+                TextButton(onPressed:(){
+                  Navigator.of(context).push(MaterialPageRoute(builder:(context)=>
+                  UploadScreen()));
+                }, child:Text("image uplaod"))
               ],
             ),
           ),
@@ -412,9 +419,152 @@ class _BuildFormField extends StatelessWidget {
 
 }
 
-/*
-eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwczovL2FwcHNvbGFjZS5jb20vdW1yYWhBcGkvIiwiYXVkIjoicHJvZHVjdGlvbl9hcGkiLCJpYXQiOjE3NTQzODU3NDAsImV4cCI6MTc1NDQ3MjE0MCwidXNlciI6eyJpZCI6IjUyIiwiZW1haWwiOiJiaWxhbGtod2FyMkBnbWFpbC5jb20iLCJmaXJzdE5hbWUiOiJiaWxhbCIsImxhc3ROYW1lIjoidWxoYXEiLCJwaG9uZU51bWJlciI6IjA5OTg4NTgiLCJ1c2VySW1hZ2UiOiIiLCJhZ2VuY3lJbWFnZSI6IiIsImNyZWF0ZWRBdCI6IjIwMjUtMDgtMDMgMjI6MzM6MDkiLCJ1c2VyVHlwZSI6IkFHRU5UIn19.eI6XEby28AxNdAOhFH5JTocoGbmPWqNsD0KVUeqSD7k
-*/
+
+
+
+
+class UploadScreen extends StatefulWidget {
+  @override
+  State<UploadScreen> createState() => _UploadScreenState();
+}
+
+
+
+class _UploadScreenState extends State<UploadScreen> {
+  XFile? _image;
+
+  // ✅ Image Picker Function
+  Future<void> _pickImage() async {
+    final ImagePicker picker = ImagePicker();
+    final XFile? pickedFile = await picker.pickImage(source: ImageSource.gallery);
+
+    if (pickedFile != null) {
+      setState(() {
+        _image = pickedFile;
+      });
+    }
+  }
+
+  // ✅ Upload with Base64
+  Future<void> uploadPackageWithBase64(File imageFile) async {
+    final uri = Uri.parse("https://appsolace.com/umrahApi/public/api/createPackage");
+    final token = await SecureStorage.getToken();
+
+    print("📸 Image Path: ${_image?.path}");
+
+    if (token == null || token.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('❌ Token not found')),
+      );
+      return;
+    }
+    final fileExtension = _image!.path.split('.').last;
+    final mimeType = 'image/$fileExtension'; // e.g., 'image/jpeg'
+
+// 2. Convert image to Base64
+    final bytes = await imageFile.readAsBytes();
+    final base64Image = base64Encode(bytes);
+
+// 3. (CORRECTION) Add the data URI prefix
+    final base64WithPrefix = 'data:$mimeType;base64,$base64Image';
+    // ✅ Convert image to Base64
+    // final bytes = await imageFile.readAsBytes();
+    // final base64Image = base64Encode(bytes); // 👈 Pure Base64 string, no data:image prefix
+
+    print("🧪 Base64 Image String (shortened): ${base64Image.substring(0, 100)}...");
+
+    // ⚠️ IMPORTANT: This body now matches the 'createPackage' API's expected structure
+    final body = {
+      "title": "My Awesome Umrah Package", // Added: A title for the package
+      "price": 5000, // Added: Price for the package (as a number)
+      "agencyId": 123, // Added: Agency ID (as a number)
+      "noOfDays": 10, // Changed to int
+      "startDate": "2025-08-08",
+      "makkahHotelName": "Pakistan package",
+      "makkahHotelDistance": "500m", // Keep as string if API expects "500m"
+      "makkahHotelRating": 5.0, // Changed to double
+      "madinaHotelName": "Good package",
+      "madinaHotelDistance": "300m", // Keep as string if API expects "300m"
+      "madinaHotelRating": 4.0, // Changed to double
+      "detail": "This package includes everything needed for a comfortable trip.",
+      "flightNumber": "SV102",
+      "airLine": "Saudia Airlines",
+      "packageImage": base64WithPrefix, // Your Base64 image
+      "packageSharedPrice": 1500, // Changed to int
+      "packageTriplePrice": 2000, // Changed to int
+      "packageDoublePrice": 2500, // Changed to int
+      "packageInclude": "Flights, Hotels, Transport, Meals", // Added: Package inclusions
+      // Remove any fields not explicitly required by 'createPackage' API
+      // e.g., "packId", "userId", "status", "isFeatured", "createdAt"
+      // unless your backend developer confirms they are client-sent.
+    };
+
+    try {
+      final response = await http.post(
+        uri,
+        headers: {
+          'Authorization': 'Bearer $token',
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+        },
+        body: jsonEncode(body),
+      );
+
+      print("✅ Status Code: ${response.statusCode}");
+      print("📦 Response Body: ${response.body}");
+
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('✅ Package uploaded successfully!')),
+        );
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('❌ Upload failed: ${response.statusCode} - ${response.body}')),
+        );
+      }
+    } catch (e) {
+      print("❌ Exception during upload: $e");
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Exception: $e')),
+      );
+    }
+  }
+
+  // ✅ UI
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: Text("Upload Umrah Package")),
+      body: Padding(
+        padding: const EdgeInsets.all(20),
+        child: Column(
+          children: [
+            if (_image != null)
+              Image.file(File(_image!.path), height: 150),
+            const SizedBox(height: 20),
+            ElevatedButton(
+              onPressed: _pickImage,
+              child: Text("Pick Image"),
+            ),
+            const SizedBox(height: 20),
+            ElevatedButton(
+              onPressed: () {
+                if (_image != null) {
+                  uploadPackageWithBase64(File(_image!.path));
+                } else {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(content: Text('Pick an image first')),
+                  );
+                }
+              },
+              child: Text("Upload Package"),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
 
 
 

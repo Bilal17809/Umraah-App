@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:umraah_app/domain/repositories/repositories.dart';
@@ -146,114 +148,13 @@ class MyApp extends StatelessWidget {
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
-        home: UploadScreen(),
-        // initialRoute: RoutesName.splash,
-        // onGenerateRoute: Routes.generateRoute,
+        // home: UploadScreen(),
+        initialRoute: RoutesName.splash,
+        onGenerateRoute: Routes.generateRoute,
       ),
     );
   }
 }
 
 
-String token ="eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwczovL2FwcHNvbGFjZS5jb20vdW1yYWhBcGkvIiwiYXVkIjoicHJvZHVjdGlvbl9hcGkiLCJpYXQiOjE3NTQ0MTEwMTUsImV4cCI6MTc1NDQ5NzQxNSwidXNlciI6eyJpZCI6IjUyIiwiZW1haWwiOiJiaWxhbGtod2FyMkBnbWFpbC5jb20iLCJmaXJzdE5hbWUiOiJiaWxhbCIsImxhc3ROYW1lIjoidWxoYXEiLCJwaG9uZU51bWJlciI6IjA5OTg4NTgiLCJ1c2VySW1hZ2UiOiIiLCJhZ2VuY3lJbWFnZSI6IiIsImNyZWF0ZWRBdCI6IjIwMjUtMDgtMDMgMjI6MzM6MDkiLCJ1c2VyVHlwZSI6IkFHRU5UIn19.4uJnzMf-PbIDzWJdEV5ScWYNoAKn9aIb3YvaPJ_svtw";
-
-
-class UploadScreen extends StatefulWidget {
-  @override
-  State<UploadScreen> createState() => _UploadScreenState();
-}
-
-class _UploadScreenState extends State<UploadScreen> {
-  XFile? _image;
-
-  String token ="eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwczovL2FwcHNvbGFjZS5jb20vdW1yYWhBcGkvIiwiYXVkIjoicHJvZHVjdGlvbl9hcGkiLCJpYXQiOjE3NTQ0MTEwMTUsImV4cCI6MTc1NDQ5NzQxNSwidXNlciI6eyJpZCI6IjUyIiwiZW1haWwiOiJiaWxhbGtod2FyMkBnbWFpbC5jb20iLCJmaXJzdE5hbWUiOiJiaWxhbCIsImxhc3ROYW1lIjoidWxoYXEiLCJwaG9uZU51bWJlciI6IjA5OTg4NTgiLCJ1c2VySW1hZ2UiOiIiLCJhZ2VuY3lJbWFnZSI6IiIsImNyZWF0ZWRBdCI6IjIwMjUtMDgtMDMgMjI6MzM6MDkiLCJ1c2VyVHlwZSI6IkFHRU5UIn19.4uJnzMf-PbIDzWJdEV5ScWYNoAKn9aIb3YvaPJ_svtw";
-
-
-  Future<void> _pickImage() async {
-    final ImagePicker picker = ImagePicker();
-    final XFile? pickedFile = await picker.pickImage(source: ImageSource.gallery);
-
-    if (pickedFile != null) {
-      setState(() {
-        _image = pickedFile;
-      });
-    }
-  }
-
-  Future<void> uploadTestImage(File imageFile) async {
-    final uri = Uri.parse("https://appsolace.com/umrahApi/public/api/createPackage");
-
-    final request = http.MultipartRequest("POST", uri);
-
-    request.headers.addAll({
-      'Authorization': 'Bearer $token',
-      'Accept': 'application/json',
-    });
-
-    // 🔁 Include ALL required fields
-    request.fields['title'] = 'Test Package';
-    request.fields['price'] = '5000';
-    request.fields['agencyId'] = '123';
-    request.fields['noOfDays'] = '10';
-
-    final mimeTypeData = lookupMimeType(imageFile.path)?.split('/') ?? ['image', 'jpeg'];
-
-    final image = await http.MultipartFile.fromPath(
-      'packageImage',
-      imageFile.path,
-      contentType: MediaType(mimeTypeData[0], mimeTypeData[1]),
-    );
-
-    request.files.add(image);
-
-    print("Sending request...");
-
-    try {
-      final response = await request.send();
-      final resBody = await response.stream.bytesToString();
-      print("Status Code: ${response.statusCode}");
-      print("Response Body: $resBody");
-
-      if (response.statusCode == 200) {
-        print("✅ Upload success!");
-      } else {
-        print("❌ Upload failed: ${response.statusCode}");
-      }
-    } catch (e) {
-      print("❌ Exception during upload: $e");
-    }
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: Text("Upload Umrah Package")),
-      body: Padding(
-        padding: const EdgeInsets.all(20),
-        child: Column(
-          children: [
-            if (_image != null)
-              Image.file(File(_image!.path), height: 150),
-            const SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: _pickImage,
-              child: Text("Pick Image"),
-            ),
-            const SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: () {
-                if (_image != null) {
-                  uploadTestImage(File(_image!.path));
-                } else {
-                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Pick an image first')));
-                }
-              },
-              child: Text("Upload Package"),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
 

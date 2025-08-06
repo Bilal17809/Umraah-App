@@ -101,8 +101,6 @@
 //   }
 // }
 
-import 'dart:io';
-
 import '../../domain/entities/create_package_entity.dart';
 
 class CreatePackageModel {

@@ -176,9 +176,10 @@ class ApiClient {
     }
   }
 
-  Future<ApiResult> deletePackage(String id, String token) async {
+
+  Future<ApiResult> deletePackage(String endpoint,String id, String token,) async {
     try {
-      final url = Uri.parse('$baseUrl$deletePackage$id');
+      final url = Uri.parse('$baseUrl$endpoint$id');
       final response = await http.delete(
         url,
         headers: {
